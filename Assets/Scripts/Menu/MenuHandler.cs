@@ -26,8 +26,8 @@ public class MenuHandler : MonoBehaviour
         Debug.Log("讀取譜面開始="+path);
         var readOsz = File.ReadAllBytes(path);
         //Debug.Log(readOsz);
-        var decompressed = Assets.SimpleZip.Zip.Decompress(readOsz);
-        Debug.Log(decompressed);
+        //var decompressed = Assets.SimpleZip.Zip.Decompress(readOsz);
+        //Debug.Log(decompressed);
         
     }
 
