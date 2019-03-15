@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 public class MenuHandler : MonoBehaviour
 {
@@ -19,11 +20,20 @@ public class MenuHandler : MonoBehaviour
 
     public void LoadOsz()
     {
-        SFB.StandaloneFileBrowser.OpenFilePanel("開啟譜面", Application.dataPath, "osz", false);
+        string[] getPath = SFB.StandaloneFileBrowser.OpenFilePanel("開啟譜面", Application.dataPath, "osz", false);
+        string path = getPath[0];
+
+        Debug.Log("讀取譜面開始");
+        var readOsz = File.ReadAllBytes(path);
+        var decompressed = Assets.SimpleZip.Zip.Decompress(readOsz);
+        Debug.Log(decompressed);
+        
     }
+
     public void GoGame()
     {
         SceneManager.LoadScene("Main");
     }
+
 
 }
