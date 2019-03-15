@@ -20,11 +20,12 @@ public class MenuHandler : MonoBehaviour
 
     public void LoadOsz()
     {
-        string[] getPath = SFB.StandaloneFileBrowser.OpenFilePanel("開啟譜面", Application.dataPath, "osz", false);
+        string[] getPath = SFB.StandaloneFileBrowser.OpenFilePanel("開啟譜面", Application.dataPath, "zip", false);
         string path = getPath[0];
 
-        Debug.Log("讀取譜面開始");
+        Debug.Log("讀取譜面開始="+path);
         var readOsz = File.ReadAllBytes(path);
+        //Debug.Log(readOsz);
         var decompressed = Assets.SimpleZip.Zip.Decompress(readOsz);
         Debug.Log(decompressed);
         
