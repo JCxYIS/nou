@@ -20,14 +20,15 @@ public class MenuHandler : MonoBehaviour
 
     public void LoadOsz()
     {
-        string[] getPath = SFB.StandaloneFileBrowser.OpenFilePanel("開啟譜面", Application.dataPath, "zip", false);
+        string[] getPath = SFB.StandaloneFileBrowser.OpenFilePanel("開啟譜面", Application.dataPath, "osz", false);
         string path = getPath[0];
 
         Debug.Log("讀取譜面開始="+path);
         var readOsz = File.ReadAllBytes(path);
-        //Debug.Log(readOsz);
-        //var decompressed = Assets.SimpleZip.Zip.Decompress(readOsz);
-        //Debug.Log(decompressed);
+        string tempPath = Application.temporaryCachePath + "\\SongCache-" + System.DateTime.Now.ToString("yyyyMMdd-HHmmss");
+        Directory.CreateDirectory(tempPath);
+        ZipUtil.Unzip(path, tempPath);
+        Debug.Log("osz解壓完成="+tempPath);
         
     }
 

@@ -7139,7 +7139,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: FORWARD
+  m_Text: USSR
 --- !u!114 &114009594622108345
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12487,8 +12487,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bbed4c1bb23325488e14c12dfb516f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  oldAnimator: {fileID: 95936388050841175}
-  newAnimator: {fileID: 95077251541074463}
+  oldAnimator: {fileID: 95857514329261867}
+  newAnimator: {fileID: 95936388050841175}
   animButton: {fileID: 114655836405924439}
   newPanel: {fileID: 1731122978736437}
   oldAnimText: Panel Fading BG
