@@ -28,7 +28,7 @@ public class MenuHandler : MonoBehaviour
         string tempPath = Application.temporaryCachePath + "\\SongCache-" + System.DateTime.Now.ToString("yyyyMMdd-HHmmss");
         Directory.CreateDirectory(tempPath);
         ZipUtil.Unzip(path, tempPath);
-        Debug.Log("osz解壓完成="+tempPath);
+        Debug.Log("osz解壓完成="+tempPath); 
         
     }
 

@@ -5574,7 +5574,7 @@ GameObject:
   - component: {fileID: 95227271601543323}
   - component: {fileID: 114504732929131979}
   m_Layer: 5
-  m_Name: Co-op Button
+  m_Name: Back Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12490,9 +12490,9 @@ MonoBehaviour:
   oldAnimator: {fileID: 95857514329261867}
   newAnimator: {fileID: 95936388050841175}
   animButton: {fileID: 114655836405924439}
-  newPanel: {fileID: 1731122978736437}
-  oldAnimText: Panel Fading BG
-  newAnimText: Panel Opening Standart
+  newPanel: {fileID: 1170754909028239}
+  oldAnimText: Panel Closing
+  newAnimText: Panel Opening
 --- !u!114 &114505506264418915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20269,7 +20269,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 25.8}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 400, y: 151.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224054335566651537
