@@ -61,18 +61,40 @@ public class OsuFile
 
     public OsuFile(string path)
     {
-        OsuFile output = new OsuFile();
         StreamReader reader = new StreamReader(path);
-
 
         // Count all lines
         while (!reader.EndOfStream)
         {
             string[] s = reader.ReadLine().Split(':');
-            Debug.Log(s[0]);
+            //Debug.Log(s[0]);
+            string content = "";
+            for(int i = 1; i < s.Length; i++)
+            {
+                if(i > 1)
+                    content += ":";
+                content += s[i];
+            }
+
             switch(s[0])
             {
                 case "AudioFilename":
+                    AudioFilename = content;
+                break;
+                case "PreviewTime":
+                    PreviewTime = int.Parse(content);
+                break;
+                case "Title":
+                    Title = content;
+                break;
+                case "Artist":
+                    Artist = content;
+                break;
+                case "Creator":
+                    Creator = content;
+                break;
+                case "Version":
+                    Version = content;
                 break;
             }
         }

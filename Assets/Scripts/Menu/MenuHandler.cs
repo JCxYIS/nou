@@ -47,15 +47,44 @@ public class MenuHandler : MonoBehaviour
         ZipUtil.Unzip(path, tempPath);
         Debug.Log("osz解壓完成="+tempPath); 
 
+        string newFolderName = "ERROR";
         foreach(var f in Directory.GetFiles(tempPath))
         {
             if(Path.GetExtension(f) == ".osu")
             {
                 OsuFile o = new OsuFile(f);
+                newFolderName = o.Title + "-" + o.Artist;
+                newFolderName = ToLegalPath(newFolderName);
+                Debug.Log("新曲包名稱: "+newFolderName);
+                break;
             }
         }
-    }
+        if(Directory.Exists(Application.persistentDataPath+"\\Songs\\"+newFolderName))
+        {
+            Debug.LogWarning("已經存在同一首歌");
+        }
+        else
+        {
+            Debug.Log(tempPath+" | "+Application.persistentDataPath+"\\Songs\\"+newFolderName);
+            Directory.Move(tempPath, Application.persistentDataPath+"\\Songs\\"+newFolderName);
+        }
 
+        SongPrinter.instance.Reprint();
+    }
+    static public string ToLegalPath(string inpath)
+    {
+        foreach(char ill in Path.GetInvalidPathChars())
+        {
+            inpath = inpath.Replace(ill, '_');
+        }
+        foreach(char ill in Path.GetInvalidFileNameChars())
+        {
+            inpath = inpath.Replace(ill, '_');
+        }
+        inpath = inpath.Replace(" ", "_");
+        return inpath;
+    }
+      
     public void GoGame()
     {
         SceneManager.LoadScene("Main");
