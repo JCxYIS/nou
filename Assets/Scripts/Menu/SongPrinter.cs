@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SongPrinter : MonoBehaviour 
 {
@@ -22,7 +23,6 @@ public class SongPrinter : MonoBehaviour
             songList.Add(item);
         }
 
-
         int cPos = 0;//相對於第一個butt，位置差
         for(int i = 0; i < songList.Count; i++)
         {
@@ -31,12 +31,38 @@ public class SongPrinter : MonoBehaviour
                 go = Instantiate(buttU, buttU.transform.parent);
             else
                 go = Instantiate(buttD, buttD.transform.parent);
+            
             go.name = "Button "+i;
             Vector3 p = go.GetComponent<RectTransform>().localPosition;
             go.GetComponent<RectTransform>().localPosition = new Vector3(p.x+cPos, p.y, p.z);
             cPos += 50;
             go.SetActive(true);
             buttList.Add(go);
+
+            List<OsuFile> o = new List<OsuFile>();
+            foreach(var f in Directory.GetFiles(songList[i]))
+            {
+                if(Path.GetExtension(f) == ".osu")
+                {
+                    o.Add( new OsuFile(f) );
+                }
+            }
+            if(o.Count == 0)
+            {
+                Debug.LogError("沒有找到.osu");
+                return;
+            }    
+                
+            go.transform.Find("Content/Indicator/Title").GetComponent<Text>().text = o[0].Title +" - "+ o[0].Artist;
+            string dif = "";
+            for(int j = 0; j < o.Count; j++)
+            {
+                if(j > 0)   dif+=" | ";
+                dif += o[j].Version;
+            }
+            go.transform.Find("Content/Indicator/Description").GetComponent<Text>().text = dif;
+            string sp = songList[i];
+            go.transform.GetChild(0).GetComponent<Button>().onClick.AddListener( ()=>DifficultyPrinter.instance.Print(sp) );
         } 
 
         buttU.SetActive(false);
@@ -49,6 +75,7 @@ public class SongPrinter : MonoBehaviour
         {
             Destroy(go);
         }
+        buttList.Clear();
         Awake();
     }
 
