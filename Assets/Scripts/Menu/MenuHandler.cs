@@ -3,13 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.IO;
+using UnityEngine.UI;
 
 public class MenuHandler : MonoBehaviour
 {
+    [SerializeField]Text verText;
+    [SerializeField]Transform panels;
+
+
     // Start is called before the first frame update
     void Start()
     {
+
+        DiscordHandler.instance.SetPresence("Idling", "主選單");
+        verText.text = "V. 1.0.0";
+
         
+        for(int i = 0; i < panels.childCount; i++)
+        {
+            GameObject go = panels.GetChild(i).gameObject;
+            if(go.name == "Main Panel")
+                go.SetActive(true);
+            else
+                go.SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -29,7 +46,14 @@ public class MenuHandler : MonoBehaviour
         Directory.CreateDirectory(tempPath);
         ZipUtil.Unzip(path, tempPath);
         Debug.Log("osz解壓完成="+tempPath); 
-        
+
+        foreach(var f in Directory.GetFiles(tempPath))
+        {
+            if(Path.GetExtension(f) == ".osu")
+            {
+                OsuFile o = new OsuFile(f);
+            }
+        }
     }
 
     public void GoGame()

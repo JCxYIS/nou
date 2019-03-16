@@ -79,6 +79,8 @@ public class GameHandler : MonoBehaviour
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
         }
+        DiscordHandler.instance.SetPresence("Playing song", 
+            string.Format("{0} ({1:F2}%) | {2:N0}x", score, score/totalScore*100f , combo) );
     }
 
     /// <summary>
