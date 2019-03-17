@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class OsuFile
 {
+    public string path;
+
     public string AudioFilename;
     //AudioLeadIn: 500
     public int PreviewTime;//: 58046
@@ -54,14 +56,14 @@ public class OsuFile
     //[TimingPoints]
     //2059,500,4,1,0,3
 
-    public OsuFile()
-    {
-        
-    }
+    public string BGpath;
+    public string BGmoviePath;
 
-    public OsuFile(string path)
+
+    public OsuFile(string osupath)
     {
-        StreamReader reader = new StreamReader(path);
+        path = osupath;
+        StreamReader reader = new StreamReader(osupath);
 
         // Count all lines
         while (!reader.EndOfStream)
@@ -79,7 +81,7 @@ public class OsuFile
             switch(s[0])
             {
                 case "AudioFilename":
-                    AudioFilename = content;
+                    AudioFilename = content.TrimStart(' ');
                 break;
                 case "PreviewTime":
                     PreviewTime = int.Parse(content);
@@ -98,7 +100,25 @@ public class OsuFile
                 break;
             }
         }
-
         reader.Close();
+
+        foreach( var f in Directory.GetFiles(Path.GetDirectoryName(osupath)) )
+        {
+            string ext = Path.GetExtension(f);
+            if(ext == ".png" || ext == ".jpg")
+            {
+                if(BGpath != null)
+                    Debug.LogWarning("發現多的背景圖片！將覆蓋Old\nOld="+BGpath+"\nNew="+f);
+                BGpath = f;
+            }
+            else if (ext == ".mp4" || ext == ".avi" || ext == ".mov")
+            {
+                if(BGmoviePath != null)
+                    Debug.LogWarning("發現多的背景影片！將覆蓋Old\nOld="+BGmoviePath+"\nNew="+f);
+                BGmoviePath = f;
+            }
+        }
     }
+
+
 }

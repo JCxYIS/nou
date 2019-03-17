@@ -31,9 +31,6 @@ sysinfo.txt
 /[Bb]uild/
 /[Bb]uilds/
 
-
-/Assets/Plugins
-
 # 一些不必要的東西 ;)
 /.vscode
 /.vs

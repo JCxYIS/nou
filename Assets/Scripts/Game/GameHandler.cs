@@ -3,10 +3,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
+//using UnityEditor;
 using System.IO;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class GameHandler : MonoBehaviour
 {
@@ -14,9 +15,13 @@ public class GameHandler : MonoBehaviour
 
     [Header("Objects")]
     public GameObject Circle; // Circle Object
+    [SerializeField] RawImage BG; // backgrounf
+    [SerializeField] AudioSource BGM; // BGM player
+    [SerializeField] VideoPlayer BGMovie;
 
     [Header("Map")]
-    public DefaultAsset MapFile; // Map file (.osu format), attach from editor
+    public TextAsset MapPath; // Map Path
+    public TextAsset MapFile; // Map file (.osu format)
     public AudioClip MainMusic; // Music file, attach from editor
     public AudioClip HitSound; // Hit sound
 
@@ -69,8 +74,29 @@ public class GameHandler : MonoBehaviour
         Music.clip = MainMusic;
         pSounds = Sounds;
         pHitSound = HitSound;
-        CircleList = new List<GameObject>();
-        ReadCircles(AssetDatabase.GetAssetPath(MapFile));
+        
+        if(GameObject.Find("GameValue"))
+        {
+            Debug.Log("找到GameValue。正在套用");
+            ToGameValue v = GameObject.Find("GameValue").GetComponent<ToGameValue>();
+            ReadCircles(v.FinalOsu.path);
+            BGM.clip = v.FinalMusic;
+            if( !string.IsNullOrEmpty(v.FinalOsu.BGmoviePath) )
+                BGMovie.url = v.FinalOsu.BGmoviePath;
+            else
+                BG.texture = v.FinalBG;
+            //Destroy(v.gameObject);
+        }
+        else
+        {
+            #if UNITY_EDITOR
+                ReadCircles(UnityEditor.AssetDatabase.GetAssetPath(MapFile));
+            #else
+                Debug.LogError("未找到GameValue! 這不該發生!");
+                UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
+            #endif
+        }
+        
         GameStart();
     }
     void Update()
@@ -88,6 +114,7 @@ public class GameHandler : MonoBehaviour
     ///</summary>
     void ReadCircles(string path)
     {
+        CircleList = new List<GameObject>();
         StreamReader reader = new StreamReader(path);
         string line;
 

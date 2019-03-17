@@ -9,29 +9,43 @@ public class MenuHandler : MonoBehaviour
 {
     [SerializeField]Text verText;
     [SerializeField]Transform panels;
+    bool PanelPrinted = false;
 
 
     // Start is called before the first frame update
     void Start()
     {
-
         DiscordHandler.instance.SetPresence("Idling", "主選單");
         verText.text = "V. 1.0.0";
 
+        GameObject g = Instantiate(new GameObject());
+        g.name = "GameValue";
+        g.AddComponent<ToGameValue>();
+        DontDestroyOnLoad(g);
         
         for(int i = 0; i < panels.childCount; i++)
         {
             GameObject go = panels.GetChild(i).gameObject;
-            if(go.name == "Main Panel")
-                go.SetActive(true);
-            else
-                go.SetActive(false);
+            go.SetActive(true);
         }
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(!PanelPrinted)
+        {
+            for(int i = 0; i < panels.childCount; i++)
+            {
+                GameObject go = panels.GetChild(i).gameObject;
+                if(go.name == "Main Panel")
+                    go.SetActive(true);
+                else
+                    go.SetActive(false);
+            }
+            PanelPrinted = true;
+        }
+       
         
     }
 
@@ -90,5 +104,19 @@ public class MenuHandler : MonoBehaviour
         SceneManager.LoadScene("Main");
     }
 
+
+    public static Texture2D LoadPic(string picpath)
+    {
+        Texture2D t2d = new Texture2D(1,1);
+        FileStream fileStream = new FileStream(picpath, FileMode.Open, FileAccess.Read);
+        fileStream.Seek(0, SeekOrigin.Begin);
+        byte[] bytes = new byte[fileStream.Length];
+        fileStream.Read(bytes, 0, (int)fileStream.Length);
+        fileStream.Close();
+        fileStream.Dispose();
+        if( !t2d.LoadImage(bytes) )
+            Debug.LogError("Load Pic Error!");
+        return t2d;
+    }
 
 }
