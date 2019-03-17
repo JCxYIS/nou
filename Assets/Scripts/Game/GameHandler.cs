@@ -85,7 +85,7 @@ public class GameHandler : MonoBehaviour
                 BGMovie.url = v.FinalOsu.BGmoviePath;
             else
                 BG.texture = v.FinalBG;
-            //Destroy(v.gameObject);
+            Destroy(v.gameObject);
         }
         else
         {
