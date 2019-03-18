@@ -19,9 +19,11 @@ public class GameHandler : MonoBehaviour
     [SerializeField] AudioSource BGM; // BGM player
     [SerializeField] VideoPlayer BGMovie;
 
-    [Header("Map")]
-    public TextAsset MapPath; // Map Path
-    public TextAsset MapFile; // Map file (.osu format)
+    [Header("In Editor Test")]
+    public string TestMapPath; // Map file (.osu format)
+    public string TestMusicPath;
+
+    [Header("In Game")]
     public AudioClip MainMusic; // Music file, attach from editor
     public AudioClip HitSound; // Hit sound
 
@@ -71,16 +73,26 @@ public class GameHandler : MonoBehaviour
         scoreText = GameObject.Find("Canvas/Score").GetComponent<Text>();
         percentageText = GameObject.Find("Canvas/Percentage").GetComponent<Text>();
 
-        Music.clip = MainMusic;
-        pSounds = Sounds;
-        pHitSound = HitSound;
+        switch(Userpref.instance.data.skinType)
+        {
+            case 1:
+                Circle = Resources.Load<GameObject>("Skin1/CircleBhe");
+                HitSound = Resources.Load<AudioClip>("Skin1/ㄅtrim");
+                break;
+            default:
+            case 0:
+            Debug.Log(Userpref.instance.data.skinType);
+                Circle = Resources.Load<GameObject>("Skin0/Circle");
+                HitSound = Resources.Load<AudioClip>("Skin0/player_knocked");
+                break;
+        }
         
         if(GameObject.Find("GameValue"))
         {
             Debug.Log("找到GameValue。正在套用");
             ToGameValue v = GameObject.Find("GameValue").GetComponent<ToGameValue>();
             ReadCircles(v.FinalOsu.path);
-            BGM.clip = v.FinalMusic;
+            MainMusic = v.FinalMusic;
             if( !string.IsNullOrEmpty(v.FinalOsu.BGmoviePath) )
                 BGMovie.url = v.FinalOsu.BGmoviePath;
             else
@@ -90,13 +102,16 @@ public class GameHandler : MonoBehaviour
         else
         {
             #if UNITY_EDITOR
-                ReadCircles(UnityEditor.AssetDatabase.GetAssetPath(MapFile));
+                ReadCircles( TestMapPath );
             #else
                 Debug.LogError("未找到GameValue! 這不該發生!");
                 UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
             #endif
         }
-        
+
+        Music.clip = MainMusic;
+        pSounds = Sounds;
+        pHitSound = HitSound;        
         GameStart();
     }
     void Update()

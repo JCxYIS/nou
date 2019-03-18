@@ -212,10 +212,10 @@ MonoBehaviour:
   BG: {fileID: 1280298865}
   BGM: {fileID: 1431193534}
   BGMovie: {fileID: 1280298863}
-  MapPath: {fileID: 0}
-  MapFile: {fileID: 102900000, guid: a8fc0243e73784e40ad36b4d7c838dc5, type: 3}
-  MainMusic: {fileID: 8300000, guid: a1782f5f68af7514f81300d320341869, type: 3}
-  HitSound: {fileID: 8300000, guid: 7538bb7b3428dad43a79a40ca8cd804d, type: 3}
+  TestMapPath: 
+  TestMusicPath: 
+  MainMusic: {fileID: 0}
+  HitSound: {fileID: 8300000, guid: 59d4dc4b6f6d5084e9565dd47e737241, type: 3}
   CircleList: []
 --- !u!4 &882044838
 Transform:
@@ -510,7 +510,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Texture: {fileID: 2800000, guid: e80f3b140d69c204e9764c4f2936fefe, type: 3}
+  m_Texture: {fileID: 0}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -837,101 +837,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!1 &1462913472
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1462913475}
-  - component: {fileID: 1462913474}
-  - component: {fileID: 1462913473}
-  m_Layer: 0
-  m_Name: Discord
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1462913473
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1462913472}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2d3857dd25b20a49b566c8999544bcd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  d: {fileID: 1462913474}
---- !u!114 &1462913474
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1462913472}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27f0a5f59ffffa84c86547736e2e730a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  applicationId: 463194739563429893
-  optionalSteamId: 
-  callbackCalls: 0
-  joinRequest:
-    userId: 
-    username: 
-    discriminator: 
-    avatar: 
-  onConnect:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  onDisconnect:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  hasResponded:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  onJoin:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: DiscordJoinEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-  onSpectate:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: DiscordJoinEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-  onJoinRequest:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: DiscordJoinRequestEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
---- !u!4 &1462913475
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1462913472}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.1062293, y: 3.5609453, z: 32.79883}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1465103672
 GameObject:
   m_ObjectHideFlags: 0
@@ -5788,6 +5693,116 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!1 &1802573580
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1802573584}
+  - component: {fileID: 1802573583}
+  - component: {fileID: 1802573582}
+  - component: {fileID: 1802573581}
+  m_Layer: 0
+  m_Name: Discord
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1802573581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1802573580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4196c7d1f08f8947b21ea557529b3af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data:
+    skinType: 0
+--- !u!114 &1802573582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1802573580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2d3857dd25b20a49b566c8999544bcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  d: {fileID: 1802573583}
+--- !u!114 &1802573583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1802573580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27f0a5f59ffffa84c86547736e2e730a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  applicationId: 463194739563429893
+  optionalSteamId: 
+  callbackCalls: 0
+  joinRequest:
+    userId: 
+    username: 
+    discriminator: 
+    avatar: 
+  onConnect:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onDisconnect:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  hasResponded:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  onJoin:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: DiscordJoinEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  onSpectate:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: DiscordJoinEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  onJoinRequest:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: DiscordJoinRequestEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+--- !u!4 &1802573584
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1802573580}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.1062293, y: 3.5609453, z: 32.79883}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1821944960
 GameObject:
   m_ObjectHideFlags: 0

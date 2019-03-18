@@ -483,6 +483,7 @@ GameObject:
   - component: {fileID: 137500474}
   - component: {fileID: 137500473}
   - component: {fileID: 137500472}
+  - component: {fileID: 137500475}
   m_Layer: 0
   m_Name: Discord
   m_TagString: Untagged
@@ -567,6 +568,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &137500475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 137500471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4196c7d1f08f8947b21ea557529b3af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data:
+    skinType: 0
 --- !u!1 &159941643
 GameObject:
   m_ObjectHideFlags: 0
@@ -15300,13 +15315,27 @@ GameObject:
   - component: {fileID: 222791945731593913}
   - component: {fileID: 225997463699074473}
   - component: {fileID: 95427464519310555}
+  - component: {fileID: 1132119970981974}
   m_Layer: 5
   m_Name: Settings Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
+--- !u!114 &1132119970981974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1132119970981973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a33e4de3a9659f24aa1f4451c4e1df59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skin: {fileID: 114255230609608275}
 --- !u!1 &1133798082316431
 GameObject:
   m_ObjectHideFlags: 0
@@ -17695,7 +17724,7 @@ GameObject:
   - component: {fileID: 114856478776540783}
   - component: {fileID: 114255230609608275}
   m_Layer: 5
-  m_Name: Dropdown
+  m_Name: Skin Dropdown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19450,7 +19479,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1984686644227373
 GameObject:
   m_ObjectHideFlags: 0
@@ -22554,15 +22583,24 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: Low
+    - m_Text: Medkit
       m_Image: {fileID: 0}
-    - m_Text: Medium
-      m_Image: {fileID: 0}
-    - m_Text: High
+    - m_Text: "\u3105 Head"
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1132119970981974}
+        m_MethodName: SetSkin
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Dropdown+DropdownEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114264313953871111
@@ -24538,7 +24576,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: GRAPHICS
+  m_Text: SKIN
 --- !u!114 &114442333530454673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25052,7 +25090,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Low
+  m_Text: Medkit
 --- !u!114 &114489388231655385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27067,7 +27105,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114780812189126533}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 137500475}
+        m_MethodName: Save
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114691546009305961
