@@ -129,7 +129,7 @@ public class GameHandler : MonoBehaviour
         DiscordHandler.instance.SetPresence(
             playStat.playing.Title + " - " + playStat.playing.Artist + "(" + playStat.playing.Creator+"'s "+playStat.playing.Version+")", 
             string.Format("{0:F0} ({1:F2}%) | {2:N0}x", playStat.score, playStat.percentage , playStat.combo) );
-        if(DelayPos == int.MaxValue)
+        if(Music.isPlaying == false)
         {
             endGameTime -= Time.deltaTime;
         }
