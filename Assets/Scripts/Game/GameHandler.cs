@@ -8,9 +8,11 @@ using System.IO;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.Video;
+using UnityEngine.SceneManagement;
 
 public class GameHandler : MonoBehaviour
 {
+    static public GameHandler instance;
     // ----------------------------------------------------------------------------
 
     [Header("Objects")]
@@ -35,17 +37,15 @@ public class GameHandler : MonoBehaviour
     public static int ApprRate = 600; // Approach rate (in ms)
     private int DelayPos = 0; // Delay song position
 
-    static float scorePerCircle = 0;
-
     public static int ClickedCount = 0; // Clicked objects counter
-    public static float score = 0;
-    public static float totalScore = 0; //current total score to calc percentage
-    public static int combo = 0;
     private static int ObjCount = 0; // Spawned objects counter
+    public PlayStat playStat;
 
     [SerializeField]
     private List<GameObject> CircleList; // Circles List
     private static string[] LineParams; // Object Parameters
+    private float endGameTime = 3; //還有幾秒節算?
+    
 
     // Audio stuff
     private AudioSource Sounds;
@@ -65,6 +65,7 @@ public class GameHandler : MonoBehaviour
 
     private void Start()
     {
+        instance = this;
         MainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         Music = GameObject.Find("Music Source").GetComponent<AudioSource>();
         Sounds = gameObject.GetComponent<AudioSource>();
@@ -72,6 +73,10 @@ public class GameHandler : MonoBehaviour
         comboText = GameObject.Find("Canvas/Combo").GetComponent<Text>();
         scoreText = GameObject.Find("Canvas/Score").GetComponent<Text>();
         percentageText = GameObject.Find("Canvas/Percentage").GetComponent<Text>();
+
+        playStat = Instantiate(new GameObject() ).AddComponent<PlayStat>();
+        playStat.gameObject.name = "PlayStat";
+        DontDestroyOnLoad(playStat.gameObject);
 
         switch(Userpref.instance.data.skinType)
         {
@@ -91,6 +96,7 @@ public class GameHandler : MonoBehaviour
         {
             Debug.Log("找到GameValue。正在套用");
             ToGameValue v = GameObject.Find("GameValue").GetComponent<ToGameValue>();
+            playStat.playing = v.FinalOsu;
             ReadCircles(v.FinalOsu.path);
             MainMusic = v.FinalMusic;
             if( !string.IsNullOrEmpty(v.FinalOsu.BGmoviePath) )
@@ -118,10 +124,19 @@ public class GameHandler : MonoBehaviour
     {
         if(Input.GetKeyUp(KeyCode.Escape))
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
+            SceneManager.LoadSceneAsync("Score");
         }
-        DiscordHandler.instance.SetPresence("Playing song", 
-            string.Format("{0} ({1:F2}%) | {2:N0}x", score, score/totalScore*100f , combo) );
+        DiscordHandler.instance.SetPresence(
+            playStat.playing.Title + " - " + playStat.playing.Artist + "(" + playStat.playing.Creator+"'s "+playStat.playing.Version+")", 
+            string.Format("{0:F0} ({1:F2}%) | {2:N0}x", playStat.score, playStat.percentage , playStat.combo) );
+        if(DelayPos == int.MaxValue)
+        {
+            endGameTime -= Time.deltaTime;
+        }
+        if(endGameTime <= 0 )
+        {
+            SceneManager.LoadSceneAsync("Score");
+        }
     }
 
     /// <summary>
@@ -228,7 +243,7 @@ public class GameHandler : MonoBehaviour
 
             CircleList.Add(CircleObject);
         }
-        scorePerCircle = 1000000f / (float)CircleList.Count;
+        playStat.Init(CircleList);
         Debug.Log("Done Reading Map! (副檔名: .osu)");
     }
 
@@ -276,28 +291,12 @@ public class GameHandler : MonoBehaviour
             CursorTrail.transform.position = new Vector3(MousePosition.x, MousePosition.y, -9);
 
             //cb
-            comboText.text = string.Format("{0:N0}", combo); //+ " Kills / "+ ClickedCount+ " Players";
-            scoreText.text = string.Format("{0:F0}", score);
-            percentageText.text = string.Format("{0:F2} %", score/totalScore*100f);
+            comboText.text = string.Format("{0:N0}", playStat.combo); //+ " Kills / "+ ClickedCount+ " Players";
+            scoreText.text = string.Format("{0:F0}", playStat.score);
+            percentageText.text = string.Format("{0:F2} %", playStat.percentage);
 
             yield return null;
         }
-    }
-
-
-    static public void GotCircle(bool isGet)
-    {
-        if(isGet)
-        {
-            combo ++;
-            score += scorePerCircle;
-        }
-        else
-        {
-            combo = 0;
-            score += 0;
-        }
-        totalScore += scorePerCircle;
     }
 
 }

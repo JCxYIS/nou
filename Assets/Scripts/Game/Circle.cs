@@ -54,7 +54,7 @@ public class Circle : MonoBehaviour
         if (!GotIt)
         {
             Debug.Log("Miss");
-            GameHandler.GotCircle(false);
+            PlayStat.instance.GotCircle(false);
             RemoveNow = true;
             this.enabled = true;
         }
@@ -66,7 +66,7 @@ public class Circle : MonoBehaviour
         if (!RemoveNow)
         {
             Debug.Log("Got");
-            GameHandler.GotCircle(true);
+            PlayStat.instance.GotCircle(true);
             GotIt = true;
             MainApproach.transform.position = new Vector2(-101, -101);
             GameHandler.pSounds.PlayOneShot(GameHandler.pHitSound);

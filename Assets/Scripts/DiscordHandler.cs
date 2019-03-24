@@ -5,20 +5,12 @@ using UnityEngine.UI;
 
 public class DiscordHandler : MonoBehaviour {
 	public static DiscordHandler instance;
-	[SerializeField]DiscordController d;
+	public DiscordController d;
 	float uploadToDiscordCd = 0;
 
 	// Use this for initialization
 	void Start () {
-		if(instance == null)
-		{
-			DontDestroyOnLoad(gameObject);
-			instance = this;
-		}
-		else
-		{
-			Destroy(gameObject);
-		}
+		instance = this;
 	}
 	
 	// Update is called once per frame

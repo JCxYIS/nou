@@ -16,7 +16,7 @@ public class MenuHandler : MonoBehaviour
     void Start()
     {
         DiscordHandler.instance.SetPresence("Idling", "主選單");
-        verText.text = "V. 1.0.0";
+        verText.text = "V. 1.1.0";
 
         GameObject g = Instantiate(new GameObject());
         g.name = "GameValue";

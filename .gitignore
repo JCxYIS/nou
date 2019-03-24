@@ -28,8 +28,7 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
-/[Bb]uild/
-/[Bb]uilds/
+
 
 # 一些不必要的東西 ;)
 /.vscode
