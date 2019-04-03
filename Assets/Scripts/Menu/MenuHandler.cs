@@ -104,6 +104,17 @@ public class MenuHandler : MonoBehaviour
         SceneManager.LoadScene("Main");
     }
 
+    public void ClearCache()
+    {
+        foreach(string f in Directory.GetFiles(Application.persistentDataPath+"/.thumbnail") )
+        {
+            File.Delete(f);
+        }
+        Caching.ClearCache();
+        Debug.Log("Cleared cache");
+        SceneManager.LoadScene("Menu");
+    }
+
 
     public static Texture2D LoadPic(string picpath)
     {

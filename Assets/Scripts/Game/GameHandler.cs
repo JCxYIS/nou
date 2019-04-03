@@ -21,6 +21,7 @@ public class GameHandler : MonoBehaviour
     [SerializeField] AudioSource BGM; // BGM player
     [SerializeField] VideoPlayer BGMovie;
     public GameObject[] noteResult; //顯示Perfect, good之類的
+    [SerializeField] Slider progressBar;
 
     #if UNITY_EDITOR
     [Header("In Editor Test")]
@@ -295,6 +296,7 @@ public class GameHandler : MonoBehaviour
             comboText.text = string.Format("{0:N0}", playStat.combo); //+ " Kills / "+ ClickedCount+ " Players";
             scoreText.text = string.Format("{0:F0}", playStat.score);
             percentageText.text = string.Format("{0:F2} %", playStat.percentage);
+            progressBar.value = BGM.time / BGM.clip.length;
 
             yield return null;
         }
