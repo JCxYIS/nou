@@ -18,15 +18,21 @@ public class ToGameValue : MonoBehaviour
         instance = this;
     }
 
+    ///<summary>
+    /// 依據 FinalOsu 來設定GameValue
+    ///</summary>
     public void Set()
     {
         string path = FinalOsu.path;
+        Debug.Log("Set Game="+path);
         FinalBG = MenuHandler.LoadPic(ToGameValue.instance.FinalOsu.BGpath);
-        ToGameValue.instance.FinalMusic = ToGameValue.LoadBGM(
+        AudioClip aud = LoadBGM(
             Path.GetDirectoryName(path) + "\\" + ToGameValue.instance.FinalOsu.AudioFilename);
+        FinalMusic = aud;
+        //return aud;
     }
 
-    public static AudioClip LoadBGM(string path)
+    static AudioClip LoadBGM(string path)
     {
         string type = Path.GetExtension(path).Replace(".","");
         Debug.Log("[Audio] path="+path+" | type="+type );

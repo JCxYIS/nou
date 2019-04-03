@@ -11,6 +11,7 @@ public class DifficultyPrinter : MonoBehaviour
     public static DifficultyPrinter instance;
     [SerializeField] GameObject buttU, buttD;
     [SerializeField] Text confirmPanel_Text;
+    [SerializeField] AudioSource audioPlayer;
     public List<GameObject> buttList;
 
 
@@ -25,6 +26,7 @@ public class DifficultyPrinter : MonoBehaviour
             Destroy(go);
         }
         buttList.Clear();
+        Destroy(audioPlayer.clip);
 
         Texture2D t2d = MenuHandler.LoadPic(thumbnailPath);
         List<OsuFile> o = new List<OsuFile>();
@@ -32,14 +34,16 @@ public class DifficultyPrinter : MonoBehaviour
         {
             if(Path.GetExtension(f) == ".osu")
             {
-                o.Add( new OsuFile(f) );
+                OsuFile no = new OsuFile(f);
+                o.Add(no);
+                ToGameValue.instance.FinalOsu = no; //先預先設定，以便後面獲取Audio
             }
         }
         if(o.Count == 0)
         {
             Debug.LogError("沒有找到.osu");
             return;
-        }    
+        }   
             
         int cPos = 0;//相對於第一個butt，位置差
         for(int i = 0; i < o.Count; i++)
@@ -84,6 +88,7 @@ public class DifficultyPrinter : MonoBehaviour
     }
     IEnumerator GoGameAsync()
     {
+        //GetMusic and init the game value
         ToGameValue.instance.Set();
         confirmPanel_Text.text = confirmPanel_Text.text.Replace("ARE YOU READY?", "NOW LOADING...");
 

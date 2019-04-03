@@ -8,8 +8,8 @@ public class Circle : MonoBehaviour
     private float PosX = 0;
     private float PosY = 0;
     private float PosZ = 0;
-    [HideInInspector]
-    public int PosA = 0;
+    
+    public int PosA = 0;//SPAWN AT (ms)
 
     private Color MainColor, MainColor1, MainColor2; // Circle sprites color
     public GameObject MainApproach, MainFore, MainBack; // Circle objects
@@ -31,6 +31,7 @@ public class Circle : MonoBehaviour
     // Set circle configuration
     public void Set(float x, float y, float z, int a)
     {
+        Debug.Log($"({x}, {y})");
         PosX = x;
         PosY = y;
         PosZ = z;
@@ -54,21 +55,35 @@ public class Circle : MonoBehaviour
         if (!GotIt)
         {
             Debug.Log("Miss");
-            PlayStat.instance.GotCircle(false);
+            PlayStat.instance.GotCircle(rating:3, transform.position);
             RemoveNow = true;
             this.enabled = true;
         }
     }
 
-    // If circle was clicked
+    ///<summary>
+    /// 點擊到我了！
+    ///</summary>
     public void Got ()
     {
         if (!RemoveNow)
         {
-            Debug.Log("Got");
-            PlayStat.instance.GotCircle(true);
+            int judgeTime = PosA + GameHandler.ApprRate;
+            float timedelta = Mathf.Abs( (float)GameHandler.timer - judgeTime );
+            int rating = 0;
+            if(timedelta < PlayStat.noteOffset[0])
+                rating = 0;
+            else if(timedelta < PlayStat.noteOffset[1])
+                rating = 1;
+            else if(timedelta < PlayStat.noteOffset[2])
+                rating = 2;
+            else
+                rating = 3;    
+            Debug.Log($"{PlayStat.noteRatings[rating]}! 時間差={timedelta}");
+
+            PlayStat.instance.GotCircle(rating, transform.position);
             GotIt = true;
-            MainApproach.transform.position = new Vector2(-101, -101);
+            MainApproach.transform.position = new Vector2(-1001, -1001);
             GameHandler.pSounds.PlayOneShot(GameHandler.pHitSound);
             RemoveNow = false;
             this.enabled = true;
@@ -81,10 +96,9 @@ public class Circle : MonoBehaviour
         while (true)
         {
             // 75 means delay before removing
-            if (GameHandler.timer >= PosA + (GameHandler.ApprRate + 75) && !GotIt)
+            if (GameHandler.timer >= PosA + (GameHandler.ApprRate + PlayStat.noteOffset[2]) && !GotIt)
             {
                 Remove();
-                GameHandler.ClickedCount++;
                 break;
             }
             yield return null;

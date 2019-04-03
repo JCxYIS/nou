@@ -20,10 +20,14 @@ public class GameHandler : MonoBehaviour
     [SerializeField] RawImage BG; // backgrounf
     [SerializeField] AudioSource BGM; // BGM player
     [SerializeField] VideoPlayer BGMovie;
+    public GameObject[] noteResult; //顯示Perfect, good之類的
 
+    #if UNITY_EDITOR
     [Header("In Editor Test")]
     public string TestMapPath; // Map file (.osu format)
-    public string TestMusicPath;
+    public AudioClip TestMusic;
+    public Texture2D TestImage;
+    #endif
 
     [Header("In Game")]
     public AudioClip MainMusic; // Music file, attach from editor
@@ -31,25 +35,23 @@ public class GameHandler : MonoBehaviour
 
     // ----------------------------------------------------------------------------
 
-    const int SPAWN = -100; // Spawn coordinates for objects
-
     public static double timer = 0; // Main song timer
-    public static int ApprRate = 600; // Approach rate (in ms)
+    public static int ApprRate = 600; // NOTE產生於 (ms) 秒前
     private int DelayPos = 0; // Delay song position
 
-    public static int ClickedCount = 0; // Clicked objects counter
     private static int ObjCount = 0; // Spawned objects counter
     public PlayStat playStat;
 
+
     [SerializeField]
     private List<GameObject> CircleList; // Circles List
-    private static string[] LineParams; // Object Parameters
+    //private static string[] LineParams; // Object Parameters
     private float endGameTime = 3; //還有幾秒節算?
     
 
     // Audio stuff
-    private AudioSource Sounds;
-    private AudioSource Music;
+    private AudioSource Sounds;//attach to self
+    private AudioSource Music;//attach to "Music Source"
     public static AudioSource pSounds;
     public static AudioClip pHitSound;
 
@@ -62,6 +64,7 @@ public class GameHandler : MonoBehaviour
     private Text comboText;
     private Text scoreText;
     private Text percentageText;
+    static public Transform WorldCanvas;
 
     private void Start()
     {
@@ -73,9 +76,8 @@ public class GameHandler : MonoBehaviour
         comboText = GameObject.Find("Canvas/Combo").GetComponent<Text>();
         scoreText = GameObject.Find("Canvas/Score").GetComponent<Text>();
         percentageText = GameObject.Find("Canvas/Percentage").GetComponent<Text>();
+        WorldCanvas = GameObject.Find("Canvas World").GetComponent<Transform>();
 
-        playStat = Instantiate(new GameObject() ).AddComponent<PlayStat>();
-        playStat.gameObject.name = "PlayStat";
         DontDestroyOnLoad(playStat.gameObject);
 
         switch(Userpref.instance.data.skinType)
@@ -86,7 +88,7 @@ public class GameHandler : MonoBehaviour
                 break;
             default:
             case 0:
-            Debug.Log(Userpref.instance.data.skinType);
+            Debug.Log("USING SKIN"+Userpref.instance.data.skinType);
                 Circle = Resources.Load<GameObject>("Skin0/Circle");
                 HitSound = Resources.Load<AudioClip>("Skin0/player_knocked");
                 break;
@@ -108,7 +110,9 @@ public class GameHandler : MonoBehaviour
         else
         {
             #if UNITY_EDITOR
-                ReadCircles( TestMapPath );
+                ReadCircles( Application.dataPath+"/"+TestMapPath );
+                MainMusic = TestMusic;
+                BG.texture = TestImage;
             #else
                 Debug.LogError("未找到GameValue! 這不該發生!");
                 UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
@@ -209,19 +213,18 @@ public class GameHandler : MonoBehaviour
             if (line == null)
                 break;
 
-            LineParams = line.Split(','); // Line parameters (X&Y axis, time position)
+            string[] LineParams = line.Split(','); // Line parameters (X&Y axis, time position)
 
             // Sorting configuration
-            GameObject CircleObject = Instantiate(Circle, new Vector2(SPAWN, SPAWN), Quaternion.identity);
+            GameObject CircleObject = Instantiate(Circle, new Vector2(-999, -999), Quaternion.identity);
             CircleObject.GetComponent<Circle>().Fore.sortingOrder = ForeOrder;
             CircleObject.GetComponent<Circle>().Back.sortingOrder = BackOrder;
             CircleObject.GetComponent<Circle>().Appr.sortingOrder = ApproachOrder;
-            CircleObject.transform.localPosition += new Vector3((float) CircleObject.transform.localPosition.x, (float) CircleObject.transform.localPosition.y, (float) Z_Index);
+            CircleObject.transform.localPosition = new Vector3(-999, -999, (float) Z_Index);
             CircleObject.transform.SetAsFirstSibling();
-            ForeOrder--; BackOrder--; ApproachOrder--; Z_Index += 0.01f;
+            ForeOrder++; BackOrder++; ApproachOrder++; Z_Index += 0.0001f;
 
             int FlipY = 384 - int.Parse(LineParams[1]); // Flip Y axis
-
             int AdjustedX = Mathf.RoundToInt(Screen.height * 1.333333f); // Aspect Ratio
 
             // Padding
@@ -277,12 +280,10 @@ public class GameHandler : MonoBehaviour
             // Check if cursor is over object
             if (Physics.Raycast(MainRay, out MainHit))
             {
-                if (MainHit.collider.gameObject.GetComponent<Circle>() && timer >= MainHit.collider.gameObject.GetComponent<Circle>().PosA + ApprRate)
+                if (MainHit.collider.gameObject.GetComponent<Circle>() && Input.anyKeyDown)
                 {
                     MainHit.collider.gameObject.GetComponent<Circle>().Got();
-                    MainHit.collider.enabled = false;
-                    ClickedCount++;
-                    
+                    MainHit.collider.enabled = false;                    
                 }
             }
 

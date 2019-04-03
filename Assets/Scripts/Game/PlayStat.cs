@@ -8,11 +8,12 @@ public class PlayStat : MonoBehaviour
     public OsuFile playing = null; // playing 
     public float score = 0;
     public float totalScore = 0; // current total score to calc percentage
+    public int maxCombo = 0;
     public int combo = 0;
-    public int notePerfect = 0;
-    public int noteOk = 0;
-    public int noteBad = 0;
-    public int noteMiss = 0;
+    static public string[] noteRatings = {"Perfect!", "OK", "Bad", "Miss.."}; // name
+    static public float[] noteScore = {1f, 0.7f, 0.3f, 0f}; // full==1
+    static public int[] noteOffset = {68, 177, 274}; // ms
+    public int[] noteResult = new int[4]; 
 
     public float percentage;
     float scorePerCircle = 0;
@@ -24,6 +25,8 @@ public class PlayStat : MonoBehaviour
     private void Update() 
     {
         percentage = score/totalScore*100f;
+        if(maxCombo < combo)
+            maxCombo = combo;
     }
     
     public void Init(List<GameObject> CircleList)
@@ -31,20 +34,22 @@ public class PlayStat : MonoBehaviour
         scorePerCircle = 1000000f / (float)CircleList.Count;    
     }
 
-    public void GotCircle(bool isGet)
+    public void GotCircle(int rating, Vector3 pos)
     {
-        if(isGet)
+        if(rating < 2)
         {
             combo ++;
-            notePerfect++;
-            score += scorePerCircle;
         }
         else
         {
             combo = 0;
             score += 0;
-            noteMiss++;
         }
+        noteResult[rating]++;
+        score += scorePerCircle * noteScore[rating];
         totalScore += scorePerCircle;
+
+        var go = Instantiate(GameHandler.instance.noteResult[rating], GameHandler.WorldCanvas);
+        go.transform.position = pos;
     }
 }

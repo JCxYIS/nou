@@ -1,6 +1,7 @@
 using System.IO;
 using UnityEngine;
 
+[System.Serializable]
 public class OsuFile
 {
     public string path;
