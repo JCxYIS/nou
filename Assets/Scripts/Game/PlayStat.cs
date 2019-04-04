@@ -27,7 +27,10 @@ public class PlayStat : MonoBehaviour
     }
     private void Update() 
     {
-        percentage = score/totalScore*100f;
+        if(totalScore == 0)// div!0
+            percentage = 0;
+        else
+            percentage = score/totalScore*100f;
         if(maxCombo < combo)
             maxCombo = combo;
     }

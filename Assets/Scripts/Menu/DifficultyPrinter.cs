@@ -55,7 +55,7 @@ public class DifficultyPrinter : MonoBehaviour
             else
                 go = Instantiate(buttD, buttD.transform.parent);
             
-            go.name = "Button "+i;
+            go.name = "Button ("+i+")";
             Vector3 p = go.GetComponent<RectTransform>().localPosition;
             go.GetComponent<RectTransform>().localPosition = new Vector3(p.x+cPos, p.y, p.z);
             cPos += 50;
