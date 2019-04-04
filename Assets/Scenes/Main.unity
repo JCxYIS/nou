@@ -225,6 +225,9 @@ MonoBehaviour:
   TestImage: {fileID: 2800000, guid: 2d3a4a4a8ff081a4bb1dcec98d0902ac, type: 3}
   MainMusic: {fileID: 0}
   HitSound: {fileID: 8300000, guid: 59d4dc4b6f6d5084e9565dd47e737241, type: 3}
+  timer: 0
+  ApprRate: 600
+  ClickedObjCount: 0
   playStat: {fileID: 2140458614}
   CircleList: []
 --- !u!4 &882044838
@@ -5014,6 +5017,7 @@ GameObject:
   - component: {fileID: 1034274138}
   - component: {fileID: 1034274140}
   - component: {fileID: 1034274139}
+  - component: {fileID: 1034274141}
   m_Layer: 5
   m_Name: Score
   m_TagString: Untagged
@@ -5082,6 +5086,44 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1034274137}
   m_CullTransparentMesh: 0
+--- !u!114 &1034274141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034274137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5428c5f955302394cb092e8b234f9fb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetValue: 0
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  duration: 0.5
 --- !u!1 &1159893815
 GameObject:
   m_ObjectHideFlags: 0
@@ -5398,7 +5440,7 @@ AudioSource:
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
-  BypassEffects: 0
+  BypassEffects: 1
   BypassListenerEffects: 0
   BypassReverbZones: 0
   rolloffCustomCurve:
@@ -10635,7 +10677,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.3
+      scalar: 0.45
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -11266,7 +11308,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 0.01
+      value: 0.1
       mode: 0
       spread: 0
       speed:
@@ -11385,7 +11427,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 100
+      scalar: 125
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -15361,6 +15403,8 @@ GameObject:
   - component: {fileID: 1821944961}
   - component: {fileID: 1821944963}
   - component: {fileID: 1821944962}
+  - component: {fileID: 1821944964}
+  - component: {fileID: 1821944965}
   m_Layer: 5
   m_Name: Combo
   m_TagString: Untagged
@@ -15384,9 +15428,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 33, y: -56}
+  m_AnchoredPosition: {x: 11.824951, y: -29.5}
   m_SizeDelta: {x: 150, y: 50}
-  m_Pivot: {x: 0.1575323, y: 0.49999988}
+  m_Pivot: {x: 0, y: 1}
 --- !u!114 &1821944962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15429,6 +15473,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1821944960}
   m_CullTransparentMesh: 0
+--- !u!95 &1821944964
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1821944960}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: bfeda699a0717a14b8bc43033c2b0a1a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1821944965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1821944960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03f262cd04fe50448bd71c90839eb3fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2057844433
 GameObject:
   m_ObjectHideFlags: 0
@@ -15459,8 +15534,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4196c7d1f08f8947b21ea557529b3af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data:
-    skinType: 0
 --- !u!114 &2057844435
 MonoBehaviour:
   m_ObjectHideFlags: 0

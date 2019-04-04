@@ -11,6 +11,9 @@ public class Circle : MonoBehaviour
     
     public int PosA = 0;//SPAWN AT (ms)
 
+    private float originalForeScale;
+    private float originalBackScale;
+
     private Color MainColor, MainColor1, MainColor2; // Circle sprites color
     public GameObject MainApproach, MainFore, MainBack; // Circle objects
 
@@ -39,6 +42,8 @@ public class Circle : MonoBehaviour
         MainColor = Appr.color;
         MainColor1 = Fore.color;
         MainColor2 = Back.color;
+        originalForeScale = Fore.transform.localScale.x;
+        originalBackScale = Back.transform.localScale.x;
     }
 
     // Spawning the circle
@@ -74,8 +79,8 @@ public class Circle : MonoBehaviour
     {
         if (!RemoveNow)
         {
-            int judgeTime = PosA + GameHandler.ApprRate;
-            float timedelta = Mathf.Abs( (float)GameHandler.timer - judgeTime );
+            int judgeTime = PosA + GameHandler.instance.ApprRate;
+            float timedelta = Mathf.Abs( (float)GameHandler.instance.timer - judgeTime );
             int rating = 0;
 
             if(timedelta < PlayStat.noteOffset[0] || alwaysPerfect)
@@ -86,7 +91,7 @@ public class Circle : MonoBehaviour
                 rating = 2;
             else
                 rating = 3;    
-            Debug.Log($"{PlayStat.noteRatings[rating]}！ 時間差={(float)GameHandler.timer - judgeTime}");
+            Debug.Log($"{PlayStat.noteRatings[rating]} | 時間差={(float)GameHandler.instance.timer - judgeTime}");
 
             PlayStat.instance.GotCircle(rating, transform.position);
             GotIt = true;
@@ -104,16 +109,16 @@ public class Circle : MonoBehaviour
         {
             if(PlayStat.instance.HasMod(PlayStat.Mods.AutoClick) && PlayStat.instance.HasMod(PlayStat.Mods.AutoMove))
             {
-                if(GameHandler.timer >= GameHandler.ApprRate + PosA && !GotIt)
+                if(GameHandler.instance.timer >= GameHandler.instance.ApprRate + PosA && !GotIt)
                 {
                     Got(true);
-                    GameHandler.ClickedObjCount++;
+                    GameHandler.instance.ClickedObjCount++;
                     GetComponent<Collider>().enabled = false;
                 }
             }
             
             // 75 means delay before removing
-            if (GameHandler.timer >= PosA + (GameHandler.ApprRate + PlayStat.noteOffset[2]) && !GotIt)
+            if (GameHandler.instance.timer >= PosA + (GameHandler.instance.ApprRate + PlayStat.noteOffset[2]) && !GotIt)
             {
                 Remove();
                 break;
@@ -165,10 +170,10 @@ public class Circle : MonoBehaviour
         // If circle was clicked
         if (GotIt)
         {
-            MainColor1.a -= 10f * Time.deltaTime;
-            MainColor2.a -= 10f * Time.deltaTime;
-            MainFore.transform.localScale += new Vector3(2, 2, 0) * Time.deltaTime;
-            MainBack.transform.localScale += new Vector3(2, 2, 0) * Time.deltaTime;
+            MainColor1.a -= 16f * Time.deltaTime;
+            MainColor2.a -= 16f * Time.deltaTime;
+            MainFore.transform.localScale += new Vector3(originalForeScale*3, originalForeScale*3, 0) * Time.deltaTime;
+            MainBack.transform.localScale += new Vector3(originalBackScale*3, originalBackScale*3, 0) * Time.deltaTime;
             Fore.color = MainColor1;
             Back.color = MainColor2;
             if (MainColor1.a <= 0f)

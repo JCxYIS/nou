@@ -33,17 +33,14 @@ public class GameHandler : MonoBehaviour
     [Header("In Game")]
     public AudioClip MainMusic; // Music file, attach from editor
     public AudioClip HitSound; // Hit sound
-
-    // ----------------------------------------------------------------------------
-
-    public static double timer = 0; // Main song timer
-    public static int ApprRate = 600; // NOTE產生於 (ms) 秒前
+    public double timer = 0; // Main song timer
+    public int ApprRate = 600; // NOTE產生於 (ms) 秒前
     private int DelayPos = 0; // Delay song position
 
-    private static int ObjCount = 0; // Spawned objects counter
-    private static int BestObjCount = 0; //理想路徑點過的note
-    public static int ClickedObjCount = 0; //點過的note
-    private static float BestMoveSpeed = 0; //理想到下一點的speed
+    private int ObjCount = 0; // Spawned objects counter
+    private int BestObjCount = 0; //理想路徑點過的note
+    public int ClickedObjCount = 0; //點過的note
+    private float BestMoveSpeed = 0; //理想到下一點的speed
     public PlayStat playStat;
 
 
@@ -66,7 +63,7 @@ public class GameHandler : MonoBehaviour
     private Ray MainRay;
     private RaycastHit MainHit;
     private Text comboText;
-    private Text scoreText;
+    private Number scoreText;
     private Text percentageText;
     static public Transform WorldCanvas;
 
@@ -78,7 +75,7 @@ public class GameHandler : MonoBehaviour
         Sounds = gameObject.GetComponent<AudioSource>();
         CursorTrail = GameObject.Find("Cursor Trail");
         comboText = GameObject.Find("Canvas/Combo").GetComponent<Text>();
-        scoreText = GameObject.Find("Canvas/Score").GetComponent<Text>();
+        scoreText = GameObject.Find("Canvas/Score").GetComponent<Number>();
         percentageText = GameObject.Find("Canvas/Percentage").GetComponent<Text>();
         WorldCanvas = GameObject.Find("Canvas World").GetComponent<Transform>();
 
@@ -327,17 +324,17 @@ public class GameHandler : MonoBehaviour
                 CursorTrail.SetActive(false);
             }
             if (timer >= ApprRate + CircleList[BestObjCount].GetComponent<Circle>().PosA )
-            {
-                Circle Obj1 = CircleList[BestObjCount].GetComponent<Circle>();
-                transform.position = Obj1.transform.position; 
-                if(BestObjCount+1 <= CircleList.Count)
+            { 
+                if(BestObjCount+1 < CircleList.Count)
                 {
+                    Circle Obj1 = CircleList[BestObjCount].GetComponent<Circle>();
                     Circle Obj2 = CircleList[BestObjCount+1].GetComponent<Circle>();
+                    transform.position = Obj1.transform.position;
                     BestMoveSpeed = Vector3.Distance( Obj2.MyPos(), transform.position);
                     BestMoveSpeed /= ( (float)(Obj2.PosA - Obj1.PosA) )/1000f;
+                    BestObjCount ++;
                 }
                 //Debug.Log("BestMoveSpeed="+BestMoveSpeed);
-                BestObjCount ++;
             }
 
 
@@ -346,8 +343,8 @@ public class GameHandler : MonoBehaviour
             CursorTrail.transform.position = new Vector3(MousePosition.x, MousePosition.y, -9);
 
             //cb
-            comboText.text = string.Format("{0:N0}", playStat.combo); //+ " Kills / "+ ClickedCount+ " Players";
-            scoreText.text = string.Format("{0:F0}", playStat.score);
+            Combo.Set(playStat.combo);
+            scoreText.Set((float)playStat.score);
             percentageText.text = string.Format("{0:F2} %", playStat.percentage);
             progressBar.value = BGM.time / BGM.clip.length;
 

@@ -6,7 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class ScoreManager : MonoBehaviour
 {
-    public Text Score, Percent, NoteStat, MaxCombo;
+    public Number Score, Percent;
+    public Number[] NoteStat;//gay,ok,bed,succ,MaxCB
     PlayStat ps = null;
 
     // Start is called before the first frame update
@@ -27,11 +28,11 @@ public class ScoreManager : MonoBehaviour
             GoMenu();
         }
 
-        Score.text = string.Format("{0:F0}", ps.score);
-        Percent.text =  string.Format("{0:F2}%", ps.percentage );   
-        NoteStat.text = string.Format(
-            "<color=green>{0:N0}</color>\n<color=#FFB000>{1:N0}</color>\n<color=#8277FF>{2:N0}</color>\n<color=RED>{3:N0}</color>\n<color=BLACK>{4:N0}</color>",
-            ps.noteResult[0], ps.noteResult[1], ps.noteResult[2], ps.noteResult[3], ps.maxCombo); 
+        Score.Set((float)ps.score);
+        Percent.Set(ps.percentage ); 
+        for(int i = 0; i <= 3; i++)  
+            NoteStat[i].Set(ps.noteResult[i]);
+        NoteStat[4].Set(ps.maxCombo); 
         //MaxCombo.text = string.Format("{0:F0}", ps.score);
  
     }

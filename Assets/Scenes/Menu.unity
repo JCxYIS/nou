@@ -852,7 +852,7 @@ MonoBehaviour:
   animButton: {fileID: 206722360}
   newPanel: {fileID: 577883747}
   oldAnimText: Panel Closing
-  newAnimText: Panel Fading FG
+  newAnimText: Panel Opening
 --- !u!95 &206722359
 Animator:
   serializedVersion: 3
@@ -3119,7 +3119,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &577883748
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4753,7 +4753,7 @@ MonoBehaviour:
   animButton: {fileID: 846992136}
   newPanel: {fileID: 577883747}
   oldAnimText: Panel Closing
-  newAnimText: Panel Fading FG
+  newAnimText: Panel Opening
 --- !u!95 &846992135
 Animator:
   serializedVersion: 3
@@ -21604,7 +21604,7 @@ GameObject:
   - component: {fileID: 225040556522736721}
   - component: {fileID: 95857514329261867}
   m_Layer: 5
-  m_Name: Mod Panel
+  m_Name: Mod Panel (obs)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27422,7 +27422,7 @@ MonoBehaviour:
   animButton: {fileID: 114695800326086289}
   newPanel: {fileID: 574416625}
   oldAnimText: Panel Closing
-  newAnimText: Panel Fading FG
+  newAnimText: Panel Opening
 --- !u!114 &114375566487044803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30499,7 +30499,7 @@ MonoBehaviour:
   animButton: {fileID: 114847849648235135}
   newPanel: {fileID: 574416625}
   oldAnimText: Panel Closing
-  newAnimText: Panel Fading FG
+  newAnimText: Panel Opening
 --- !u!114 &114635987595724769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33407,11 +33407,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   oldAnimator: {fileID: 95077251541074463}
-  newAnimator: {fileID: 95857514329261867}
+  newAnimator: {fileID: 95936388050841175}
   animButton: {fileID: 114913807414297227}
-  newPanel: {fileID: 1665741048279459}
+  newPanel: {fileID: 1170754909028239}
   oldAnimText: Panel Closing
-  newAnimText: Panel Fading FG
+  newAnimText: Panel Opening
 --- !u!114 &114979751263601003
 MonoBehaviour:
   m_ObjectHideFlags: 0

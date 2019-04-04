@@ -9,8 +9,8 @@ public class PlayStat : MonoBehaviour
     static public string[] ModString = {"Groove Coaster", "Auto Click"}; 
     public enum Mods {AutoMove, AutoClick}
     public Mods[] mods;
-    public float score = 0;
-    public float totalScore = 0; // current total score to calc percentage
+    public double score = 0;
+    public double totalScore = 0; // current total score to calc percentage
     public int maxCombo = 0;
     public int combo = 0;
     static public string[] noteRatings = {"Perfect!", "OK", "Bad", "Miss.."}; // name
@@ -19,7 +19,7 @@ public class PlayStat : MonoBehaviour
     public int[] noteResult = new int[4]; 
 
     public float percentage;
-    float scorePerCircle = 0;
+    double scorePerCircle = 0;
 
     private void Start() 
     {
@@ -30,7 +30,7 @@ public class PlayStat : MonoBehaviour
         if(totalScore == 0)// div!0
             percentage = 0;
         else
-            percentage = score/totalScore*100f;
+            percentage = (float)(score/totalScore*100f);
         if(maxCombo < combo)
             maxCombo = combo;
     }
