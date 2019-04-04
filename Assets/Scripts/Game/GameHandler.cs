@@ -47,7 +47,7 @@ public class GameHandler : MonoBehaviour
     [SerializeField]
     private List<GameObject> CircleList; // Circles List
     //private static string[] LineParams; // Object Parameters
-    private float endGameTime = 3; //還有幾秒節算?
+    private float endGameTime = 1; //還有幾秒節算?
     
 
     // Audio stuff

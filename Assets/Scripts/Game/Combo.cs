@@ -24,7 +24,7 @@ public class Combo : MonoBehaviour
             //Debug.Log("play");
             shouldJump = false;
         }    
-        if(value % 25 == 0 && big != value)
+        if(value % 25 == 0 && big != value && value != 0)
         {
             var g = Instantiate(gameObject, transform.parent);
             g.GetComponent<Animator>().Play("JumpBig");
