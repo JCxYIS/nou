@@ -30,8 +30,8 @@ public class ScoreManager : MonoBehaviour
         Score.text = string.Format("{0:F0}", ps.score);
         Percent.text =  string.Format("{0:F2}%", ps.percentage );   
         NoteStat.text = string.Format(
-            "<color=green>{0:N0}</color>\n<color=#FFB000>{1:N0}</color>\n<color=#8277FF>{2:N0}</color>\n<color=RED>{3:N0}</color>\n<color=BLACK>{4:N0}",
-            ps.noteResult[0], ps.noteResult[1], ps.noteResult[2], ps.noteResult[3], ps.combo); 
+            "<color=green>{0:N0}</color>\n<color=#FFB000>{1:N0}</color>\n<color=#8277FF>{2:N0}</color>\n<color=RED>{3:N0}</color>\n<color=BLACK>{4:N0}</color>",
+            ps.noteResult[0], ps.noteResult[1], ps.noteResult[2], ps.noteResult[3], ps.maxCombo); 
         //MaxCombo.text = string.Format("{0:F0}", ps.score);
  
     }

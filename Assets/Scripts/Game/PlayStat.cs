@@ -6,6 +6,7 @@ public class PlayStat : MonoBehaviour
     static public PlayStat instance;
 
     public OsuFile playing = null; // playing 
+    static public string[] ModString = {"Groove Coaster", "Auto Click"}; 
     public enum Mods {AutoMove, AutoClick}
     public Mods[] mods;
     public float score = 0;

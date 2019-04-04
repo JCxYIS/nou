@@ -7,12 +7,12 @@ public class SettingsHandler : MonoBehaviour
 
     void Start() 
     {
-        Userpref.instance.Load();
-        skin.value = Userpref.instance.data.skinType;
+        Userpref.Load();
+        skin.value = Userpref.data.skinType;
     }
     void Update() 
     {
-        Userpref.instance.data.skinType = skin.value;
+        Userpref.data.skinType = skin.value;
     }
 
     

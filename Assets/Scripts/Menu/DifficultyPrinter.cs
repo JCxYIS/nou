@@ -12,6 +12,7 @@ public class DifficultyPrinter : MonoBehaviour
     [SerializeField] GameObject buttU, buttD;
     [SerializeField] Text confirmPanel_Text;
     [SerializeField] AudioSource audioPlayer;
+    public Button mod_AutoMove, mod_AutoClick;
     public List<GameObject> buttList;
 
 
@@ -76,10 +77,40 @@ public class DifficultyPrinter : MonoBehaviour
     {
         OsuFile osu = JsonUtility.FromJson<OsuFile>(osujson);
         ToGameValue.instance.FinalOsu = osu;
-        string s = "<color=yellow>" + osu.Title +"</color> - <color=yellow>"+ osu.Artist + "</color>\n";
-        s     += "<color=yellow>" + osu.Creator + "</color>\'s <color=yellow>"+ osu.Version + "</color>\n";
+        PrintConfirm();
+    }
+    void PrintConfirm()
+    {
+        OsuFile osu = ToGameValue.instance.FinalOsu;
+
+        string modString = "";
+        foreach(var m in Userpref.data.mods)
+        {
+            modString += ", "+PlayStat.ModString[(int)m];
+        }
+        if(modString == "")
+            modString = "null";
+        else
+            modString = modString.Substring(2);
+
+        string s = $"Mods: <color=yellow>{modString}</color>\n";
+        s     +=   $"<color=yellow>{osu.Title}</color> - <color=yellow>{osu.Artist}</color>\n";
+        s     +=   $"<color=yellow>{osu.Creator}</color>\'s <color=yellow>{osu.Version}</color>\n";
         s += "<size=20><b>ARE YOU READY?</b></size>";
         confirmPanel_Text.text = s;
+        mod_AutoClick.transform.Find("Icon").GetComponent<Image>().enabled = Userpref.HasModStatic(PlayStat.Mods.AutoClick);
+        mod_AutoMove.transform.Find("Icon").GetComponent<Image>().enabled = Userpref.HasModStatic(PlayStat.Mods.AutoMove);
+    }
+
+    public void ModButt_AutoClick_OnClick()
+    {
+        Userpref.ToggleModStatic(PlayStat.Mods.AutoClick);
+        PrintConfirm();
+    }
+    public void ModButt_AutoMove_OnClick()
+    {
+        Userpref.ToggleModStatic(PlayStat.Mods.AutoMove);
+        PrintConfirm();
     }
 
     public void Butt_StartGoGame()
@@ -91,6 +122,7 @@ public class DifficultyPrinter : MonoBehaviour
         //GetMusic and init the game value
         ToGameValue.instance.Set();
         confirmPanel_Text.text = confirmPanel_Text.text.Replace("ARE YOU READY?", "NOW LOADING...");
+        Userpref.Save();
 
         var L = SceneManager.LoadSceneAsync("Main");
         while(!L.isDone)

@@ -84,7 +84,7 @@ public class GameHandler : MonoBehaviour
 
         DontDestroyOnLoad(playStat.gameObject);
 
-        switch(Userpref.instance.data.skinType)
+        switch(Userpref.data.skinType)
         {
             case 1:
                 Circle = Resources.Load<GameObject>("Skin1/CircleBhe");
@@ -92,7 +92,7 @@ public class GameHandler : MonoBehaviour
                 break;
             default:
             case 0:
-            Debug.Log("USING SKIN"+Userpref.instance.data.skinType);
+            Debug.Log("USING SKIN"+Userpref.data.skinType);
                 Circle = Resources.Load<GameObject>("Skin0/Circle");
                 HitSound = Resources.Load<AudioClip>("Skin0/player_knocked");
                 break;
@@ -122,6 +122,7 @@ public class GameHandler : MonoBehaviour
                 UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
             #endif
         }
+        playStat.mods = Userpref.data.mods.ToArray();
 
         Music.clip = MainMusic;
         pSounds = Sounds;
