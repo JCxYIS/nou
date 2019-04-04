@@ -6,6 +6,8 @@ public class PlayStat : MonoBehaviour
     static public PlayStat instance;
 
     public OsuFile playing = null; // playing 
+    public enum Mods {AutoMove, AutoClick}
+    public Mods[] mods;
     public float score = 0;
     public float totalScore = 0; // current total score to calc percentage
     public int maxCombo = 0;
@@ -51,5 +53,17 @@ public class PlayStat : MonoBehaviour
 
         var go = Instantiate(GameHandler.instance.noteResult[rating], GameHandler.WorldCanvas);
         go.transform.position = pos;
+        Destroy(go, 7);
+    }
+
+    public bool HasMod(Mods mod)
+    {
+        foreach (var m in mods)
+        {
+            if(m == mod)
+                return true;
+        }
+        Debug.Log("Not "+mod);
+        return false;
     }
 }

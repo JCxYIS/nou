@@ -31,7 +31,7 @@ public class Circle : MonoBehaviour
     // Set circle configuration
     public void Set(float x, float y, float z, int a)
     {
-        Debug.Log($"({x}, {y})");
+        //Debug.Log($"({x}, {y})");
         PosX = x;
         PosY = y;
         PosZ = z;
@@ -44,9 +44,15 @@ public class Circle : MonoBehaviour
     // Spawning the circle
     public void Spawn()
     {
-        gameObject.transform.position = new Vector3(PosX, PosY, PosZ);
+        gameObject.transform.position = MyPos();
         this.enabled = true;
         StartCoroutine(Checker());
+    }
+
+    //因為在spawn之前，它的位置是螢幕外
+    public Vector3 MyPos()
+    {
+        return new Vector3(PosX, PosY, PosZ);
     }
 
     // If circle wasn't clicked
@@ -64,14 +70,15 @@ public class Circle : MonoBehaviour
     ///<summary>
     /// 點擊到我了！
     ///</summary>
-    public void Got ()
+    public void Got (bool alwaysPerfect = false)
     {
         if (!RemoveNow)
         {
             int judgeTime = PosA + GameHandler.ApprRate;
             float timedelta = Mathf.Abs( (float)GameHandler.timer - judgeTime );
             int rating = 0;
-            if(timedelta < PlayStat.noteOffset[0])
+
+            if(timedelta < PlayStat.noteOffset[0] || alwaysPerfect)
                 rating = 0;
             else if(timedelta < PlayStat.noteOffset[1])
                 rating = 1;
@@ -79,7 +86,7 @@ public class Circle : MonoBehaviour
                 rating = 2;
             else
                 rating = 3;    
-            Debug.Log($"{PlayStat.noteRatings[rating]}! 時間差={timedelta}");
+            Debug.Log($"{PlayStat.noteRatings[rating]}！ 時間差={(float)GameHandler.timer - judgeTime}");
 
             PlayStat.instance.GotCircle(rating, transform.position);
             GotIt = true;
@@ -95,6 +102,16 @@ public class Circle : MonoBehaviour
     {
         while (true)
         {
+            if(PlayStat.instance.HasMod(PlayStat.Mods.AutoClick) && PlayStat.instance.HasMod(PlayStat.Mods.AutoMove))
+            {
+                if(GameHandler.timer >= GameHandler.ApprRate + PosA && !GotIt)
+                {
+                    Got(true);
+                    GameHandler.ClickedObjCount++;
+                    GetComponent<Collider>().enabled = false;
+                }
+            }
+            
             // 75 means delay before removing
             if (GameHandler.timer >= PosA + (GameHandler.ApprRate + PlayStat.noteOffset[2]) && !GotIt)
             {

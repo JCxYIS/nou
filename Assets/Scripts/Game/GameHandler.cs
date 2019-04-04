@@ -41,6 +41,9 @@ public class GameHandler : MonoBehaviour
     private int DelayPos = 0; // Delay song position
 
     private static int ObjCount = 0; // Spawned objects counter
+    private static int BestObjCount = 0; //理想路徑點過的note
+    public static int ClickedObjCount = 0; //點過的note
+    private static float BestMoveSpeed = 0; //理想到下一點的speed
     public PlayStat playStat;
 
 
@@ -190,7 +193,7 @@ public class GameHandler : MonoBehaviour
         for (int i = 3; i > TotalLines.ToString().Length; i--)
             TotalLinesStr += "0";
         TotalLinesStr += TotalLines.ToString();
-        float Z_Index = -(float.Parse(TotalLinesStr));
+        float Z_Index = -5; //-(float.Parse(TotalLinesStr));
 
         GameObject Parent = Instantiate(new GameObject());
         Parent.name = "Medkits' parent";
@@ -223,7 +226,8 @@ public class GameHandler : MonoBehaviour
             CircleObject.GetComponent<Circle>().Appr.sortingOrder = ApproachOrder;
             CircleObject.transform.localPosition = new Vector3(-999, -999, (float) Z_Index);
             CircleObject.transform.SetAsFirstSibling();
-            ForeOrder++; BackOrder++; ApproachOrder++; Z_Index += 0.0001f;
+            CircleObject.name = "Medkit #"+Z_Index;
+            ForeOrder++; BackOrder++; ApproachOrder++; Z_Index -= 0.0001f;
 
             int FlipY = 384 - int.Parse(LineParams[1]); // Flip Y axis
             int AdjustedX = Mathf.RoundToInt(Screen.height * 1.333333f); // Aspect Ratio
@@ -269,7 +273,6 @@ public class GameHandler : MonoBehaviour
                 DelayPos = (CircleList[ObjCount].GetComponent<Circle>().PosA);
             else
                 DelayPos = int.MaxValue;//end, cannot spawn anymore!
-            MainRay = MainCamera.ScreenPointToRay(Input.mousePosition);
 
             // Spawn object
             if (timer >= DelayPos)
@@ -278,18 +281,67 @@ public class GameHandler : MonoBehaviour
                 ObjCount++;
             }
 
+            Vector3 mousePos = Input.mousePosition;
+            if( playStat.HasMod(PlayStat.Mods.AutoMove) )
+            {
+                mousePos = MainCamera.WorldToScreenPoint(transform.position);
+            }
+
+            MainRay = MainCamera.ScreenPointToRay(mousePos);
             // Check if cursor is over object
             if (Physics.Raycast(MainRay, out MainHit))
             {
-                if (MainHit.collider.gameObject.GetComponent<Circle>() && Input.anyKeyDown)
+                if (MainHit.collider.gameObject.GetComponent<Circle>())
                 {
-                    MainHit.collider.gameObject.GetComponent<Circle>().Got();
-                    MainHit.collider.enabled = false;                    
+                    //Auto Full 的判斷在 circle 裡
+                    //Debug.Log(timer+" Touched! Should="+(ApprRate + CircleList[ClickedObjCount].GetComponent<Circle>().PosA) );
+                    if(playStat.HasMod(PlayStat.Mods.AutoClick) && !playStat.HasMod(PlayStat.Mods.AutoMove))   // auto click
+                    {    if(timer >= ApprRate + CircleList[ClickedObjCount].GetComponent<Circle>().PosA - PlayStat.noteOffset[0])
+                        {
+                            MainHit.collider.gameObject.GetComponent<Circle>().Got();
+                            ClickedObjCount++;
+                            MainHit.collider.enabled = false;
+                        }
+                    }
+                    else if(Input.anyKeyDown)
+                    {
+                        MainHit.collider.gameObject.GetComponent<Circle>().Got();
+                        ClickedObjCount++;
+                        MainHit.collider.enabled = false;
+                    }                    
                 }
             }
+                
+
+            // Determine best Pos
+            if(BestObjCount < CircleList.Count)
+            {
+                transform.position = Vector3.MoveTowards(
+                    transform.position, 
+                    CircleList[BestObjCount].GetComponent<Circle>().MyPos() + new Vector3(0,0,0.1f), 
+                    BestMoveSpeed * Time.deltaTime);
+            }
+            else
+            {
+                CursorTrail.SetActive(false);
+            }
+            if (timer >= ApprRate + CircleList[BestObjCount].GetComponent<Circle>().PosA )
+            {
+                Circle Obj1 = CircleList[BestObjCount].GetComponent<Circle>();
+                transform.position = Obj1.transform.position; 
+                if(BestObjCount+1 <= CircleList.Count)
+                {
+                    Circle Obj2 = CircleList[BestObjCount+1].GetComponent<Circle>();
+                    BestMoveSpeed = Vector3.Distance( Obj2.MyPos(), transform.position);
+                    BestMoveSpeed /= ( (float)(Obj2.PosA - Obj1.PosA) )/1000f;
+                }
+                //Debug.Log("BestMoveSpeed="+BestMoveSpeed);
+                BestObjCount ++;
+            }
+
 
             // Cursor trail movement
-            MousePosition = MainCamera.ScreenToWorldPoint(Input.mousePosition);
+            MousePosition = MainCamera.ScreenToWorldPoint(mousePos);
             CursorTrail.transform.position = new Vector3(MousePosition.x, MousePosition.y, -9);
 
             //cb
