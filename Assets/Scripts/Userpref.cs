@@ -11,6 +11,18 @@ public class Userpref : MonoBehaviour {
     {
         public int skinType = 0;
         public List<PlayStat.Mods> mods;
+        ///<summary>
+        /// 用法: bestRecords["{曲名Title} - {作者Artist}"][{作圖者Creator}'s {難度Version}]；
+        /// 推薦使用LoadBestRecord()
+        ///</summary>
+        public Dictionary<string, Dictionary<string, BestRecord> > bestRecords;
+    }
+    [System.Serializable]
+    public class BestRecord
+    {
+        public PlayStat.Mods[] usingMods;
+        public double originalScore;
+        public double trueScore;
     }
 
     void Awake()
@@ -62,5 +74,28 @@ public class Userpref : MonoBehaviour {
             Debug.Log("Add Mod:"+mod);
         }
         Save();
+    }
+    ///<summary>
+    /// 如果輸入的成績(trueScore)比原本高，便會覆蓋原資料
+    ///</summary>
+    static public void SetBestRecord(OsuFile osu, PlayStat playStat)
+    {
+        BestRecord best = LoadBestRecord(osu);
+        if(playStat.trueScore > best.trueScore || 
+            (playStat.trueScore == best.trueScore && playStat.mods.Length < best.usingMods.Length) )
+        {
+            best.trueScore = playStat.trueScore;
+            best.usingMods = playStat.mods;
+            best.originalScore = playStat.score;
+        }
+    }
+    static public BestRecord LoadBestRecord(string title, string artist, string creator, string version)
+
+    {
+        return data.bestRecords[$"{title} - {artist}"][$"{creator}'s {version}"];
+    }
+    static public BestRecord LoadBestRecord(OsuFile osu)
+    {
+        return LoadBestRecord(osu.Title, osu.Artist, osu.Creator, osu.Version);
     }
 }

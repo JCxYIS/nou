@@ -5041,7 +5041,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -74, y: -29.543}
+  m_AnchoredPosition: {x: -74, y: -29.54303}
   m_SizeDelta: {x: 133.9, y: 59.081}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1034274139
@@ -15600,9 +15600,10 @@ MonoBehaviour:
     Version: Debug
     BGpath: null
     BGmoviePath: null
-  mods: 0000000001000000
+  mods: 00000000
   score: 0
   totalScore: 0
+  trueScore: 0
   maxCombo: 0
   combo: 0
   noteResult: 00000000000000000000000000000000

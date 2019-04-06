@@ -8,16 +8,21 @@ public class PlayStat : MonoBehaviour
     public OsuFile playing = null; // playing 
     static public string[] ModString = {"Groove Coaster", "Auto Click"}; 
     public enum Mods {AutoMove, AutoClick}
-    public Mods[] mods;
-    public double score = 0;
-    public double totalScore = 0; // current total score to calc percentage
-    public int maxCombo = 0;
-    public int combo = 0;
+    ///<summary>負值表示結算成績"直接扣除"(最多扣至0)，正值表示"直接乘法" {見ScoreManager.CalcTrueScore)</summary>
+    static public float[] modMultipler = {-0.5f, -0.5f};
     static public string[] noteRatings = {"Perfect!", "OK", "Bad", "Miss.."}; // name
     static public float[] noteScore = {1f, 0.7f, 0.3f, 0f}; // full==1
     static public int[] noteOffset = {68, 177, 274}; // ms
-    public int[] noteResult = new int[4]; 
 
+    
+    [Header("Game Play")]
+    public Mods[] mods;
+    public double score = 0;
+    public double totalScore = 0; // current total score to calc percentage
+    public double trueScore;
+    public int maxCombo = 0;
+    public int combo = 0;
+    public int[] noteResult = new int[4]; 
     public float percentage;
     double scorePerCircle = 0;
 
@@ -31,8 +36,11 @@ public class PlayStat : MonoBehaviour
             percentage = 0;
         else
             percentage = (float)(score/totalScore*100f);
+
         if(maxCombo < combo)
             maxCombo = combo;
+        
+        trueScore = CalcTrueScore(score, mods);
     }
     
     public void Init(List<GameObject> CircleList)
@@ -70,4 +78,25 @@ public class PlayStat : MonoBehaviour
         Debug.Log("Not "+mod);
         return false;
     }
+
+    double CalcTrueScore(double originalScore, Mods[] mods)
+    {
+        double s = originalScore;
+        foreach(var m in mods)
+        {
+            float mul = PlayStat.modMultipler[(int)m];
+            if(mul < 0)
+            {
+                s -= originalScore*(-mul);
+                if(s <= 0)
+                    s = 0;
+            }
+            else
+            {
+                s *= mul;
+            }
+        }
+        return s;
+    }
+
 }
