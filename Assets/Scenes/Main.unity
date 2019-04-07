@@ -5041,7 +5041,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -74, y: -29.54303}
+  m_AnchoredPosition: {x: -74, y: -29.5}
   m_SizeDelta: {x: 133.9, y: 59.081}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1034274139
@@ -5065,7 +5065,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 4c42fd7f54949ae4184e956444ff8e58, type: 3}
+    m_Font: {fileID: 12800000, guid: 006301ab01744444ca39fb6e09807e73, type: 3}
     m_FontSize: 42
     m_FontStyle: 0
     m_BestFit: 0
@@ -5689,7 +5689,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 4c42fd7f54949ae4184e956444ff8e58, type: 3}
+    m_Font: {fileID: 12800000, guid: 006301ab01744444ca39fb6e09807e73, type: 3}
     m_FontSize: 22
     m_FontStyle: 0
     m_BestFit: 0
@@ -10480,7 +10480,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 4c42fd7f54949ae4184e956444ff8e58, type: 3}
+    m_Font: {fileID: 12800000, guid: 006301ab01744444ca39fb6e09807e73, type: 3}
     m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
@@ -15429,7 +15429,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 11.824951, y: -29.5}
+  m_AnchoredPosition: {x: 12, y: -29.5}
   m_SizeDelta: {x: 150, y: 81.4}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1821944962
@@ -15453,7 +15453,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 4c42fd7f54949ae4184e956444ff8e58, type: 3}
+    m_Font: {fileID: 12800000, guid: 006301ab01744444ca39fb6e09807e73, type: 3}
     m_FontSize: 42
     m_FontStyle: 0
     m_BestFit: 0
@@ -15598,8 +15598,9 @@ MonoBehaviour:
     Artist: null
     Creator: J.C.
     Version: Debug
-    BGpath: null
-    BGmoviePath: null
+    OverallDifficulty: 0
+    BGfileName: 
+    BGmovieFileName: 
   mods: 00000000
   score: 0
   totalScore: 0

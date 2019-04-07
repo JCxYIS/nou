@@ -132,9 +132,17 @@ public class GameHandler : MonoBehaviour
         {
             SceneManager.LoadSceneAsync("Score");
         }
-        DiscordHandler.instance.SetPresence(
+        try
+        {
+            DiscordHandler.instance.SetPresence(
             playStat.playing.Title + " - " + playStat.playing.Artist + "(" + playStat.playing.Creator+"'s "+playStat.playing.Version+")", 
             string.Format("{0:F0} ({1:F2}%) | {2:N0}x", playStat.score, playStat.percentage , playStat.combo) );
+        }
+        catch
+        {
+            Debug.LogError("Cannot set Discord!");
+        }
+        
         if(Music.isPlaying == false)
         {
             endGameTime -= Time.deltaTime;
