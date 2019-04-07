@@ -102,8 +102,8 @@ public class GameHandler : MonoBehaviour
             playStat.playing = v.FinalOsu;
             ReadCircles(v.FinalOsu.path);
             MainMusic = v.FinalMusic;
-            if( !string.IsNullOrEmpty(v.FinalOsu.BGmoviePath) )
-                BGMovie.url = v.FinalOsu.BGmoviePath;
+            if( !string.IsNullOrEmpty(v.FinalOsu.BGmovieFileName) )
+                BGMovie.url = v.FinalOsu.BGmovieFileName;
             else
                 BG.texture = v.FinalBG;
             Destroy(v.gameObject);

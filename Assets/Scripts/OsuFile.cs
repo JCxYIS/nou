@@ -5,6 +5,7 @@ using UnityEngine;
 public class OsuFile
 {
     public string path;
+    public string dirPath {get {return Path.GetDirectoryName(path);} }
 
     public string AudioFilename;
     //AudioLeadIn: 500
@@ -35,7 +36,7 @@ public class OsuFile
     //[Difficulty]
     //HPDrainRate:6
     //CircleSize:4
-    //OverallDifficulty:8
+    public float OverallDifficulty;//:8
     //ApproachRate:9
     //SliderMultiplier:2.4
     //SliderTickRate:1
@@ -57,8 +58,8 @@ public class OsuFile
     //[TimingPoints]
     //2059,500,4,1,0,3
 
-    public string BGpath;
-    public string BGmoviePath;
+    public string BGfileName;
+    public string BGmovieFileName;
 
 
     public OsuFile(string osupath)
@@ -69,7 +70,10 @@ public class OsuFile
         // Count all lines
         while (!reader.EndOfStream)
         {
-            string[] s = reader.ReadLine().Split(':');
+            string str = reader.ReadLine();
+
+#region METADATA
+            string[] s = str.Split(':');
             //Debug.Log(s[0]);
             string content = "";
             for(int i = 1; i < s.Length; i++)
@@ -78,7 +82,6 @@ public class OsuFile
                     content += ":";
                 content += s[i];
             }
-
             switch(s[0])
             {
                 case "AudioFilename":
@@ -99,26 +102,35 @@ public class OsuFile
                 case "Version":
                     Version = content;
                 break;
+                case "OverallDifficulty":
+                    //Debug.Log(content);
+                    OverallDifficulty = float.Parse(content);
+                break;
             }
+#endregion
+
+#region BG
+            if(str == "//Background and Video events")
+            {
+                str = reader.ReadLine();
+                s = str.Split('\"');
+                foreach(var p in s)
+                    if(p.Contains("."))
+                        BGfileName = p;
+                //next line: video
+                str = reader.ReadLine();
+                if(str.Contains("Video"))
+                {
+                    s = str.Split('\"');
+                    foreach(var p in s)
+                        if(p.Contains("."))
+                            BGmovieFileName = p;
+                }
+            }
+#endregion
         }
         reader.Close();
-
-        foreach( var f in Directory.GetFiles(Path.GetDirectoryName(osupath)) )
-        {
-            string ext = Path.GetExtension(f);
-            if(ext == ".png" || ext == ".jpg")
-            {
-                if(BGpath != null)
-                    Debug.LogWarning("發現多的背景圖片！將覆蓋Old\nOld="+BGpath+"\nNew="+f);
-                BGpath = f;
-            }
-            else if (ext == ".mp4" || ext == ".avi" || ext == ".mov")
-            {
-                if(BGmoviePath != null)
-                    Debug.LogWarning("發現多的背景影片！將覆蓋Old\nOld="+BGmoviePath+"\nNew="+f);
-                BGmoviePath = f;
-            }
-        }
+        
     }
 
 

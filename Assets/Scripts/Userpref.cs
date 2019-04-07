@@ -10,12 +10,13 @@ public class Userpref : MonoBehaviour {
     public class Pref
     {
         public int skinType = 0;
-        public List<PlayStat.Mods> mods;
+        public List<PlayStat.Mods> mods = null;
+        public string customOsuPath = "";
         ///<summary>
         /// 用法: bestRecords["{曲名Title} - {作者Artist}"][{作圖者Creator}'s {難度Version}]；
         /// 推薦使用LoadBestRecord()
         ///</summary>
-        public Dictionary<string, Dictionary<string, BestRecord> > bestRecords;
+        public Dictionary<string, Dictionary<string, BestRecord> > bestRecords = null;
     }
     [System.Serializable]
     public class BestRecord
@@ -31,7 +32,10 @@ public class Userpref : MonoBehaviour {
         Load();
     }
 
-
+    public void DoSave()
+    {
+        Save();
+    }
     static public void Save()
     {
         string json = JsonUtility.ToJson(data);
@@ -43,6 +47,7 @@ public class Userpref : MonoBehaviour {
         if( !File.Exists(Application.persistentDataPath+"\\Userpref.txt") )
         {
             Debug.LogWarning("未找到存檔！重新建立中");
+            data = new Pref();
             Save();
         }  
         string json = File.ReadAllText(Application.persistentDataPath+"\\Userpref.txt");

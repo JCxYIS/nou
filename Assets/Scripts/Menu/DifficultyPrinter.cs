@@ -63,7 +63,7 @@ public class DifficultyPrinter : MonoBehaviour
             buttList.Add(go);
                 
             go.transform.Find("Content/Indicator/Title").GetComponent<Text>().text = o[i].Title +" - "+ o[i].Artist;
-            go.transform.Find("Content/Indicator/Description").GetComponent<Text>().text = o[i].Creator +"\'s "+ o[i].Version;
+            go.transform.Find("Content/Indicator/Description").GetComponent<Text>().text = $"{o[i].Creator}\'s {o[i].Version} (★{o[i].OverallDifficulty})";
             go.transform.Find("Content/Gradient/SongBG").GetComponent<RawImage>().texture = t2d;
             string ojson = JsonUtility.ToJson(o[i]);
             go.transform.GetChild(0).GetComponent<Button>().onClick.AddListener( ()=>GoConfirm(ojson) );

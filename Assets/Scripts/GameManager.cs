@@ -19,4 +19,12 @@ public class GameManager : MonoBehaviour {
 			Destroy(gameObject);
 		}
     }
+
+	/// <summary>
+	/// Update is called every frame, if the MonoBehaviour is enabled.
+	/// </summary>
+	void Update()
+	{
+		//Profiler
+	}
 }

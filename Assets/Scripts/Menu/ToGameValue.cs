@@ -25,9 +25,9 @@ public class ToGameValue : MonoBehaviour
     {
         string path = FinalOsu.path;
         Debug.Log("Set Game="+path);
-        FinalBG = MenuHandler.LoadPic(ToGameValue.instance.FinalOsu.BGpath);
+        FinalBG = MenuHandler.LoadPic(FinalOsu.dirPath + "/" + FinalOsu.BGfileName);
         AudioClip aud = LoadBGM(
-            Path.GetDirectoryName(path) + "\\" + ToGameValue.instance.FinalOsu.AudioFilename);
+            FinalOsu.dirPath + "\\" + FinalOsu.AudioFilename);
         FinalMusic = aud;
         //return aud;
     }

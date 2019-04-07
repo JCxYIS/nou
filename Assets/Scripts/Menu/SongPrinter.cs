@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class SongPrinter : MonoBehaviour 
 {
     public static SongPrinter instance;
-    [SerializeField] GameObject buttU, buttD;
+    [SerializeField] GameObject buttU, buttD, shouldPlaceIn;
     public List<GameObject> buttList;
 
     void Awake()
@@ -19,9 +19,17 @@ public class SongPrinter : MonoBehaviour
 
         foreach (var item in Directory.GetDirectories(Application.persistentDataPath + "\\Songs\\"))
         {
-            Debug.Log("獲取曲包 路徑: "+item);
+            Debug.Log("從nou存檔獲取曲包 路徑: "+item);
             songList.Add(item);
         }
+        if(Directory.Exists(Userpref.data.customOsuPath))
+            foreach (var item in Directory.GetDirectories(Userpref.data.customOsuPath))
+            {
+                Debug.Log("從osu獲取曲包 路徑: "+item);
+                songList.Add(item);
+            }
+        else
+            Debug.Log("未找到osu資料夾");
 
         int cPos = 0;//相對於第一個butt，位置差
         for(int i = 0; i < songList.Count; i++)
@@ -36,6 +44,7 @@ public class SongPrinter : MonoBehaviour
             Vector3 p = go.GetComponent<RectTransform>().localPosition;
             go.GetComponent<RectTransform>().localPosition = new Vector3(p.x+cPos, p.y, p.z);
             cPos += 50;
+            go.transform.SetParent(shouldPlaceIn.transform, true);
             go.SetActive(true);
             buttList.Add(go);
 
@@ -60,7 +69,13 @@ public class SongPrinter : MonoBehaviour
             Texture2D t2d = new Texture2D(1,1);
             if( !File.Exists(thumbnailPath) )
             {
-                t2d = MenuHandler.LoadPic(o[0].BGpath);
+                if(string.IsNullOrEmpty(o[0].BGfileName))
+                {
+                    Debug.LogWarning($"BG is empty path (Song={o[0].Title})");
+                    t2d = Resources.Load<Texture2D>("NoPic");
+                }
+                else
+                    t2d = MenuHandler.LoadPic(o[0].dirPath + "/" + o[0].BGfileName);
                 TextureScale.Bilinear(t2d, (int)( ((float)t2d.width / (float)t2d.height)*100 ), 100);
                 byte[] bytes = t2d.EncodeToPNG();
                 File.WriteAllBytes(thumbnailPath, bytes);
@@ -83,6 +98,7 @@ public class SongPrinter : MonoBehaviour
             {
                 if(j > 0)   dif+=" | ";
                 dif += o[j].Version;
+                dif += $"(★{o[j].OverallDifficulty})";
             }
             go.transform.Find("Content/Indicator/Description").GetComponent<Text>().text = dif;
             string sp = songList[i], t = thumbnailPath;
