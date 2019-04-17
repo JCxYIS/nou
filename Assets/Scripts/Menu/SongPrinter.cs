@@ -44,6 +44,8 @@ public class SongPrinter : MonoBehaviour
             Vector3 p = go.GetComponent<RectTransform>().localPosition;
             go.GetComponent<RectTransform>().localPosition = new Vector3(p.x+cPos, p.y, p.z);
             cPos += 50;
+            Vector2 v = shouldPlaceIn.GetComponent<RectTransform>().offsetMax;
+            shouldPlaceIn.GetComponent<RectTransform>().offsetMax = new Vector2(300+cPos, v.y); //L padding
             go.transform.SetParent(shouldPlaceIn.transform, true);
             go.SetActive(true);
             buttList.Add(go);
