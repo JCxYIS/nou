@@ -103,7 +103,7 @@ public class GameHandler : MonoBehaviour
             ReadCircles(v.FinalOsu.path);
             MainMusic = v.FinalMusic;
             if( !string.IsNullOrEmpty(v.FinalOsu.BGmovieFileName) )
-                BGMovie.url = v.FinalOsu.BGmovieFileName;
+                BGMovie.url = Path.Combine(v.FinalOsu.dirPath, v.FinalOsu.BGmovieFileName);
             else
                 BG.texture = v.FinalBG;
             Destroy(v.gameObject);

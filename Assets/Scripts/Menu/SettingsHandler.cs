@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,9 +13,17 @@ public class SettingsHandler : MonoBehaviour
     {
         Userpref.Load();
         skin.value = Userpref.data.skinType;
+        //skin.options
         bgm.value = Userpref.data.volumeBgm;
         sfx.value = Userpref.data.volumeSfx;
         osuPath.text = Userpref.data.customOsuPath;
+        calcScore.options.Clear();
+        foreach(string s in PlayStat.CalcMode)
+        {
+            Dropdown.OptionData op = new Dropdown.OptionData();
+            op.text = s;
+            calcScore.options.Add(op);
+        }
         calcScore.value = Userpref.data.calcScoreMod;
     }
     void Update() 

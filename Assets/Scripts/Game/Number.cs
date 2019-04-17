@@ -7,12 +7,12 @@ public class Number : MonoBehaviour
 {
     [Tooltip("請見String.Format能用的格式如F0 / N2之類的")]
     public string DisplayStyle = "F0";
-    public float targetValue;
+    public double targetValue;
     [Tooltip("數值變動速率")]
     public AnimationCurve curve;
-    private float baseValue;
+    private double baseValue;
     private float completePercent;
-    private float currentValue;
+    private double currentValue;
     [Tooltip("要花多少秒 從0%到100%")]
     public float duration;
 
