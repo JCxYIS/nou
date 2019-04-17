@@ -96,7 +96,7 @@ public class Circle : MonoBehaviour
             PlayStat.instance.GotCircle(rating, transform.position);
             GotIt = true;
             MainApproach.transform.position = new Vector2(-1001, -1001);
-            GameHandler.pSounds.PlayOneShot(GameHandler.pHitSound);
+            GameHandler.pSounds.PlayOneShot(GameHandler.pHitSound, Userpref.data.volumeSfx);
             RemoveNow = false;
             this.enabled = true;
         }

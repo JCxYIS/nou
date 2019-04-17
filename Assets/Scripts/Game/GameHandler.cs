@@ -266,6 +266,7 @@ public class GameHandler : MonoBehaviour
     private void GameStart()
     {
         Application.targetFrameRate = -1; // Unlimited Frame Rate
+        Music.volume = Userpref.data.volumeBgm;
         Music.Play();
         StartCoroutine(UpdateRoutine()); // Using coroutine instead of Update()
     }

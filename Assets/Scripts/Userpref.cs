@@ -10,6 +10,9 @@ public class Userpref : MonoBehaviour {
     public class Pref
     {
         public int skinType = 0;
+        public int calcScoreMod = 0;
+        public float volumeBgm = 1;
+        public float volumeSfx = 0.87f;
         public List<PlayStat.Mods> mods = null;
         public string customOsuPath = "";
         ///<summary>
