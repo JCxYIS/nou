@@ -62,15 +62,25 @@ public class OsuFile
     public string BGmovieFileName;
 
 
-    public OsuFile(string osupath)
+
+
+    /// <summary>
+    /// 參數二選一即可
+    /// </summary>
+    /// <param name="osupath"></param>
+    /// <param name="data"></param>
+    public OsuFile(string osupath, string data = "")
     {
         path = osupath;
-        StreamReader reader = new StreamReader(osupath);
+        if(data == "")
+            data = File.ReadAllText(osupath);
+
+        string[] dataLines = data.Split(new[] { "\r\n", "\r", "\n" }, System.StringSplitOptions.None);
 
         // Count all lines
-        while (!reader.EndOfStream)
+        for(int l= 0; l < dataLines.Length; l++)
         {
-            string str = reader.ReadLine();
+            string str = dataLines[l];
 
 #region METADATA
             string[] s = str.Split(':');
@@ -112,13 +122,13 @@ public class OsuFile
 #region BG
             if(str == "//Background and Video events")
             {
-                str = reader.ReadLine();
+                str = dataLines[l+1];
                 s = str.Split('\"');
                 foreach(var p in s)
                     if(p.Contains("."))
                         BGfileName = p;
                 //next line: video
-                str = reader.ReadLine();
+                str = dataLines[l+2];
                 if(str.Contains("Video"))
                 {
                     s = str.Split('\"');
@@ -129,7 +139,6 @@ public class OsuFile
             }
 #endregion
         }
-        reader.Close();
         
     }
 

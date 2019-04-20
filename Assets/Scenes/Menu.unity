@@ -24935,6 +24935,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb1a36cd8017ea140abb6820dfec20e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  exampleSongs:
+  - isFromAsset: 1
+    path: Ascension_to_Heaven-xi
   buttU: {fileID: 1901694348814765}
   buttD: {fileID: 1100211955076297}
   shouldPlaceIn: {fileID: 1895664986}

@@ -20,7 +20,7 @@ public class DifficultyPrinter : MonoBehaviour
     {
         instance = this;
     }
-    public void Print(string songDirPath, string thumbnailPath)
+    public void Print(string songDirPath, Texture2D t2d, OsuFile[] osus)
     {
         foreach(var go in buttList)
         {
@@ -29,25 +29,11 @@ public class DifficultyPrinter : MonoBehaviour
         buttList.Clear();
         Destroy(audioPlayer.clip);
 
-        Texture2D t2d = MenuHandler.LoadPic(thumbnailPath);
-        List<OsuFile> o = new List<OsuFile>();
-        foreach(var f in Directory.GetFiles(songDirPath))
-        {
-            if(Path.GetExtension(f) == ".osu")
-            {
-                OsuFile no = new OsuFile(f);
-                o.Add(no);
-                ToGameValue.instance.FinalOsu = no; //先預先設定，以便後面獲取Audio
-            }
-        }
-        if(o.Count == 0)
-        {
-            Debug.LogError("沒有找到.osu");
-            return;
-        }   
+        
+        ToGameValue.instance.FinalOsu = osus[0]; //先預先設定，以便後面獲取Audio 
             
         int cPos = 0;//相對於第一個butt，位置差
-        for(int i = 0; i < o.Count; i++)
+        for(int i = 0; i < osus.Length; i++)
         {
             GameObject go;
             if(i % 2 == 0)
@@ -62,10 +48,12 @@ public class DifficultyPrinter : MonoBehaviour
             go.SetActive(true);
             buttList.Add(go);
                 
-            go.transform.Find("Content/Indicator/Title").GetComponent<Text>().text = o[i].Title +" - "+ o[i].Artist;
-            go.transform.Find("Content/Indicator/Description").GetComponent<Text>().text = $"{o[i].Creator}\'s {o[i].Version} (★{o[i].OverallDifficulty})";
+            go.transform.Find("Content/Indicator/Title").GetComponent<Text>().text = 
+                $"{osus[i].Title} - {osus[i].Artist}";
+            go.transform.Find("Content/Indicator/Description").GetComponent<Text>().text =
+                $"{osus[i].Creator}\'s {osus[i].Version} (★{osus[i].OverallDifficulty})";
             go.transform.Find("Content/Gradient/SongBG").GetComponent<RawImage>().texture = t2d;
-            string ojson = JsonUtility.ToJson(o[i]);
+            string ojson = JsonUtility.ToJson(osus[i]);
             go.transform.GetChild(0).GetComponent<Button>().onClick.AddListener( ()=>GoConfirm(ojson) );
         } 
 
