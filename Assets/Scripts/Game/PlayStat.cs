@@ -16,7 +16,7 @@ public class PlayStat : MonoBehaviour
     ///<summary>
     /// 計分方式
     ///</summary> 
-    static public string[] CalcMode = {"nou! (FC=1000000)", "osu! (DAMN)"};
+    static public string[] CalcMode = {"nou! (F=1000000)", "osu! ()", "LANDY (NullReferenceException)"};
 
     ///<summary>負值表示結算成績"直接扣除"(最多扣至0)，正值表示"直接乘法" {見ScoreManager.CalcTrueScore)</summary>
     static public float[] modMultipler = {-0.5f, -0.5f};
@@ -94,13 +94,17 @@ public class PlayStat : MonoBehaviour
         {
             case 0://norm
             default:
-                
                 break;
             case 1://osu
-                //Dx(N-2)xAxM+300A
+                //Dx(N-2)x300A/25xM+300A
                 int N = combo - 2;
                 if (N < 0) N = 0;
-                delta = playing.OverallDifficulty * N * noteScoreOsu[rating] * 1 + 300f * noteScoreOsu[rating];
+                delta = playing.OverallDifficulty * N * noteScoreOsu[rating] * 1 * 12f + 300f * noteScoreOsu[rating];
+                break;
+            case 2:
+                N = combo - 4;
+                if (N < 0) N = 0;
+                delta = Mathf.Pow(playing.OverallDifficulty * N * noteScoreOsu[rating] * 1 * 8.7f, 2.019f) + 1;
                 break;
         }
         score += delta;
