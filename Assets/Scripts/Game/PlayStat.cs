@@ -49,6 +49,8 @@ public class PlayStat : MonoBehaviour
     /// 每個note的基礎分數
     /// </summary>
     double scorePerCircle = 0;
+    public float hp = 50, hpmax = 100;
+    public float sp = 0, spmax = 100;
 
     private void Start() 
     {
@@ -104,7 +106,7 @@ public class PlayStat : MonoBehaviour
             case 2:
                 N = combo - 4;
                 if (N < 0) N = 0;
-                delta = Mathf.Pow(playing.OverallDifficulty * N * noteScoreOsu[rating] * 1 * 8.7f, 2.019f) + 1;
+                delta = Mathf.Pow(playing.OverallDifficulty * N * noteScoreOsu[rating] * 1 * 8.7f, 2.019f) + 1 * noteScoreOsu[rating];
                 break;
         }
         score += delta;
@@ -125,7 +127,7 @@ public class PlayStat : MonoBehaviour
             if(m == mod)
                 return true;
         }
-        Debug.Log("Not "+mod);
+        //Debug.Log("Not "+mod);
         return false;
     }
 

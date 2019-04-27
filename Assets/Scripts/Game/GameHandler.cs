@@ -22,6 +22,9 @@ public class GameHandler : MonoBehaviour
     [SerializeField] VideoPlayer BGMovie;
     public GameObject[] noteResult; //顯示Perfect, good之類的
     [SerializeField] Slider progressBar;
+    [SerializeField] GameObject autoMoveCursor;
+    [SerializeField] HealthBar SPbar;
+    [SerializeField] HealthBar HPbar;
 
     #if UNITY_EDITOR
     [Header("In Editor Test")]
@@ -120,6 +123,9 @@ public class GameHandler : MonoBehaviour
             #endif
         }
         playStat.mods = Userpref.data.mods.ToArray();
+
+        if (!playStat.HasMod(PlayStat.Mods.AutoMove))
+            autoMoveCursor.SetActive(false);
 
         Music.clip = MainMusic;
         pSounds = Sounds;
@@ -351,11 +357,13 @@ public class GameHandler : MonoBehaviour
             MousePosition = MainCamera.ScreenToWorldPoint(mousePos);
             CursorTrail.transform.position = new Vector3(MousePosition.x, MousePosition.y, -9);
 
-            //cb
+            //UI Display
             Combo.Set(playStat.combo);
             scoreText.Set((float)playStat.score);
             percentageText.text = string.Format("{0:F2} %", playStat.percentage);
             progressBar.value = BGM.time / BGM.clip.length;
+            HPbar.Set(playStat.hp, playStat.hpmax);
+            SPbar.Set(playStat.sp, playStat.spmax);
 
             yield return null;
         }
