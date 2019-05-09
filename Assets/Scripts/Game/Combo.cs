@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Combo : MonoBehaviour
 {
     static int value = 0;
-    static int big = 0;//big jump 25x
+    static int nextbig = 25;//big jump 25x
     static bool shouldJump = false;
     
     // Start is called before the first frame update
@@ -24,13 +24,14 @@ public class Combo : MonoBehaviour
             //Debug.Log("play");
             shouldJump = false;
         }    
-        if(value % 25 == 0 && big != value && value != 0)
+        if(value >= nextbig)
         {
             var g = Instantiate(gameObject, transform.parent);
             g.GetComponent<Animator>().Play("JumpBig");
             Destroy( g.GetComponent<Combo>() );
             Destroy(g, 5);
-            big = value;
+            while(nextbig <= value)
+                nextbig += 25;
         }
     }
 

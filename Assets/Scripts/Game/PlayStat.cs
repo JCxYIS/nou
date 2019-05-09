@@ -49,8 +49,9 @@ public class PlayStat : MonoBehaviour
     /// 每個note的基礎分數
     /// </summary>
     double scorePerCircle = 0;
-    public float hp = 50, hpmax = 100;
-    public float sp = 0, spmax = 100;
+    public CharaManager.Chara usingChara;
+    public float hp;
+    public float sp;
 
     private void Start() 
     {
@@ -71,7 +72,9 @@ public class PlayStat : MonoBehaviour
     
     public void Init(List<GameObject> CircleList)
     {
-        scorePerCircle = 1000000f / (float)CircleList.Count;    
+        scorePerCircle = 1000000f / (float)CircleList.Count;
+        hp = usingChara.hp / 2f;
+        Debug.Log($"CHARA: HP={usingChara.hp} | REG={usingChara.heal} | DEF={usingChara.def}");
     }
 
     ///<summary>
@@ -79,14 +82,19 @@ public class PlayStat : MonoBehaviour
     ///</summary>
     public void GotCircle(int rating, Vector3 pos)
     {
-        if(rating < 2)
+        if(rating < 2)// GAY! OK
         {
             combo ++;
+            Heal(noteScore[rating]);
         }
-        else
+        else if(rating == 2)// bed
         {
             combo = 0;
-            score += 0;
+        }
+        else //succ
+        {
+            combo = 0;
+            Hurt(1);
         }
         noteResult[rating]++;
         double delta = scorePerCircle * noteScore[rating];
@@ -103,10 +111,27 @@ public class PlayStat : MonoBehaviour
                 if (N < 0) N = 0;
                 delta = playing.OverallDifficulty * N * noteScoreOsu[rating] * 1 * 12f + 300f * noteScoreOsu[rating];
                 break;
-            case 2:
+            case 2://LANDY
                 N = combo - 4;
                 if (N < 0) N = 0;
                 delta = Mathf.Pow(playing.OverallDifficulty * N * noteScoreOsu[rating] * 1 * 8.7f, 2.019f) + 1 * noteScoreOsu[rating];
+                if(rating < 2)
+                {
+                    if (combo >= 10 && combo < 100)
+                        combo += 1;
+                    else if (combo >= 100 && combo < 500)
+                        combo += 3;
+                    else if (combo >= 500 && combo < 1500)
+                        combo += 7;
+                    else if (combo >= 1500)
+                        combo += 12;
+                    if (combo > 3655)
+                        combo += 5;
+                    if(combo > 10666 && combo < 1000000000)
+                        combo += combo;
+                    if (combo >= int.MaxValue / 2)
+                        score += combo;
+                }
                 break;
         }
         score += delta;
@@ -118,6 +143,18 @@ public class PlayStat : MonoBehaviour
         var go = Instantiate(GameHandler.instance.noteResult[rating], GameHandler.WorldCanvas);
         go.transform.position = pos;
         Destroy(go, 7);
+    }
+
+    /// <summary>
+    /// 回復HP(會計算combo)
+    /// </summary>
+    void Heal(float regMulti)
+    {
+        hp += usingChara.heal / 100f * (1f + combo * 0.005f);
+    }
+    void Hurt(float dmgMulti)
+    {
+        hp -= 500f / usingChara.def * dmgMulti;
     }
 
     public bool HasMod(Mods mod)

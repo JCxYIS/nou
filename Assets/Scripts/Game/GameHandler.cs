@@ -362,8 +362,8 @@ public class GameHandler : MonoBehaviour
             scoreText.Set((float)playStat.score);
             percentageText.text = string.Format("{0:F2} %", playStat.percentage);
             progressBar.value = BGM.time / BGM.clip.length;
-            HPbar.Set(playStat.hp, playStat.hpmax);
-            SPbar.Set(playStat.sp, playStat.spmax);
+            HPbar.Set(playStat.hp, playStat.usingChara.hp);
+            SPbar.Set(playStat.sp, 36550666f);
 
             yield return null;
         }

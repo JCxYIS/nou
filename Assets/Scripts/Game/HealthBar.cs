@@ -18,6 +18,6 @@ public class HealthBar : MonoBehaviour
         if (targetValue == -1)
             GetComponent<Slider>().value = value / maxvalue;
         targetValue = value / maxvalue;
-        text.text = $"{value}<color=#d2d2d2>/{maxvalue}</color>";
+        text.text = $"{string.Format("{0:F0}", value)}<color=#d2d2d2>/{string.Format("{0:F0}", maxvalue)}</color>";
     }
 }
