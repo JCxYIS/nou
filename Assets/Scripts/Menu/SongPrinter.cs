@@ -89,13 +89,13 @@ public class SongPrinter : MonoBehaviour
                     for(int a = 0; a<=30; a++)
                     {
                         if(f.name == a.ToString())
-                            o.Add( new OsuFile( "",f.ToString() ) );
+                            o.Add( new OsuFile( $"Songs/{songList[i].path}/{f.name}",f.ToString() ) );
                     }
                 }
             }
             else
             {
-#if UNITY_EDITOR || UNITY_STANDALONE
+#if UNITY_EDITOR || UNITY_STANDALONE //not for webgl
                 foreach (var f in Directory.GetFiles(songList[i].path) )
                 {
                     //Debug.Log(f);
@@ -120,7 +120,7 @@ public class SongPrinter : MonoBehaviour
             {
                 string t2dpath = $"Songs/{songList[i].path}/{Path.GetFileNameWithoutExtension(o[0].BGfileName)}";
                 t2d = Resources.Load<Texture2D>(t2dpath);
-                Debug.Log("RESt2dpath="+t2dpath);
+                Debug.Log("RES t2d path="+t2dpath);
             }
 #if UNITY_EDITOR || UNITY_STANDALONE
             else

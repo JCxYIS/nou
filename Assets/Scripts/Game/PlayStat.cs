@@ -20,7 +20,7 @@ public class PlayStat : MonoBehaviour
 
     ///<summary>負值表示結算成績"直接扣除"(最多扣至0)，正值表示"直接乘法" {見ScoreManager.CalcTrueScore)</summary>
     static public float[] modMultipler = {-0.5f, -0.5f};
-    static public string[] noteRatings = {"Perfect!", "OK", "Bad", "Miss.."}; // name
+    static public string[] noteRatings = {"GAY!", "OK", "Bed.", "SUCC"}; // name
     static public float[] noteScore = {1f, 0.7f, 0.3f, 0f}; // full==1
     static public float[] noteScoreOsu = { 1f, 0.3333333333f, 0.1666666666f, 0f }; // full==1
     static public int[] noteOffset = {68, 177, 274}; // ms

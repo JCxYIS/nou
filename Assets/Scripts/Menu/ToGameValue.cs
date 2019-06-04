@@ -9,6 +9,7 @@ public class ToGameValue : MonoBehaviour
     public static ToGameValue instance;
 
     [Header("Bring these to Game...")]
+    //public bool isFromResource = false;
     public OsuFile FinalOsu;
     public AudioClip FinalMusic;
     public Texture2D FinalBG;
