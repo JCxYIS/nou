@@ -89,7 +89,7 @@ public class SongPrinter : MonoBehaviour
                     for(int a = 0; a<=30; a++)
                     {
                         if(f.name == a.ToString())
-                            o.Add( new OsuFile( $"Songs/{songList[i].path}/{f.name}",f.ToString() ) );
+                            o.Add( new OsuFile( $"RESOURCES/Songs/{songList[i].path}/{f.name}",f.ToString() ) );
                     }
                 }
             }

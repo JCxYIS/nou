@@ -26,10 +26,17 @@ public class ToGameValue : MonoBehaviour
     {
         string path = FinalOsu.path;
         Debug.Log("Set Game="+path);
-        FinalBG = MenuHandler.LoadPic(FinalOsu.dirPath + "/" + FinalOsu.BGfileName);
-        AudioClip aud = LoadBGM(
-            FinalOsu.dirPath + "\\" + FinalOsu.AudioFilename);
-        FinalMusic = aud;
+        if (FinalOsu.isFromAsset)
+        {
+            FinalBG = Resources.Load<Texture2D>($"{FinalOsu.dirPath}\\{FinalOsu.BGfileName}");
+            FinalMusic = Resources.Load<AudioClip>($"{FinalOsu.dirPath}\\{FinalOsu.AudioFilename}");
+        }
+        else
+        {
+            FinalBG = MenuHandler.LoadPic($"{FinalOsu.dirPath}\\{FinalOsu.BGfileName}");
+            AudioClip aud = LoadBGM($"{FinalOsu.dirPath}\\{FinalOsu.AudioFilename}");
+            FinalMusic = aud;
+        }
         //return aud;
     }
 

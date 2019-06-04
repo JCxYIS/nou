@@ -103,7 +103,16 @@ public class GameHandler : MonoBehaviour
             Debug.Log("找到GameValue。正在套用");
             ToGameValue v = GameObject.Find("GameValue").GetComponent<ToGameValue>();
             playStat.playing = v.FinalOsu;
-            ReadCircles(v.FinalOsu.path);
+            if (v.FinalOsu.isFromAsset)
+            {
+                TextAsset txt = Resources.Load<TextAsset>( v.FinalOsu.path.Replace("RESOURCES/", "") );
+                string p = $"{Application.temporaryCachePath}/{Path.GetRandomFileName()}";
+                File.WriteAllText(p, txt.text);
+                Debug.Log("Song is from Resources! TempSheetPath=" + p);
+                ReadCircles(p);
+            }
+            else
+                ReadCircles(v.FinalOsu.path);
             MainMusic = v.FinalMusic;
             if( !string.IsNullOrEmpty(v.FinalOsu.BGmovieFileName) )
                 BGMovie.url = Path.Combine(v.FinalOsu.dirPath, v.FinalOsu.BGmovieFileName);

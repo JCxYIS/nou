@@ -4,8 +4,22 @@ using UnityEngine;
 [System.Serializable]
 public class OsuFile
 {
+    /// <summary>
+    /// 如果在使用者電腦裡，就是絕對位置，否則將以RESOURCES開頭
+    /// </summary>
     public string path;
-    public string dirPath {get {return Path.GetDirectoryName(path);} }
+    public string dirPath
+    {
+        get
+        {
+            if (isFromAsset)
+            {
+                return path.Replace("RESOURCES/", "");
+            }
+            else
+                return Path.GetDirectoryName(path);
+        }
+    }
 
     public string AudioFilename;
     //AudioLeadIn: 500
@@ -140,6 +154,17 @@ public class OsuFile
 #endregion
         }
         
+    }
+
+    public bool isFromAsset
+    {
+        get
+        {
+            if (path.StartsWith("RESOURCES/"))
+                return true;
+            else
+                return false;
+        }
     }
 
 
