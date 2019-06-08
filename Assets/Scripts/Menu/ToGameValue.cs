@@ -24,12 +24,11 @@ public class ToGameValue : MonoBehaviour
     ///</summary>
     public void Set()
     {
-        string path = FinalOsu.path;
-        Debug.Log("Set Game="+path);
+        Debug.Log($"[GV] isFromAsset={FinalOsu.isFromAsset} | DirPath={FinalOsu.dirPath}");
         if (FinalOsu.isFromAsset)
         {
-            FinalBG = Resources.Load<Texture2D>($"{FinalOsu.dirPath}\\{FinalOsu.BGfileName}");
-            FinalMusic = Resources.Load<AudioClip>($"{FinalOsu.dirPath}\\{FinalOsu.AudioFilename}");
+            FinalBG = Resources.Load<Texture2D>($"{FinalOsu.dirPath}/{Path.GetFileNameWithoutExtension(FinalOsu.BGfileName)}");
+            FinalMusic = Resources.Load<AudioClip>($"{FinalOsu.dirPath}/{Path.GetFileNameWithoutExtension(FinalOsu.AudioFilename)}");
         }
         else
         {
@@ -37,6 +36,13 @@ public class ToGameValue : MonoBehaviour
             AudioClip aud = LoadBGM($"{FinalOsu.dirPath}\\{FinalOsu.AudioFilename}");
             FinalMusic = aud;
         }
+
+        if (!FinalBG)
+            Debug.LogError("No BG Loaded!");
+        if (!FinalMusic)
+            Debug.LogError("No Audio Loaded!");
+
+        Debug.Log($"Set Game Value! BGM_Length={FinalMusic.length} | BG_size={FinalBG.width}x{FinalBG.height}");
         //return aud;
     }
 

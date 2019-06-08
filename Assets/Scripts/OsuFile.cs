@@ -8,13 +8,17 @@ public class OsuFile
     /// 如果在使用者電腦裡，就是絕對位置，否則將以RESOURCES開頭
     /// </summary>
     public string path;
+
+    /// <summary>
+    /// 如果在使用者電腦裡，就是絕對位置，否則將回傳在Resources資料夾中的相對位置
+    /// </summary>
     public string dirPath
     {
         get
         {
             if (isFromAsset)
             {
-                return path.Replace("RESOURCES/", "");
+                return Path.GetDirectoryName( path.Replace("RESOURCES/", "") );
             }
             else
                 return Path.GetDirectoryName(path);

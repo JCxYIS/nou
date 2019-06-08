@@ -70,6 +70,7 @@ public class GameHandler : MonoBehaviour
     private Text percentageText;
     static public Transform WorldCanvas;
 
+    #region UNITY
     private void Start()
     {
         instance = this;
@@ -167,6 +168,7 @@ public class GameHandler : MonoBehaviour
             SceneManager.LoadSceneAsync("Score");
         }
     }
+    #endregion
 
     /// <summary>
     ///讀取map
