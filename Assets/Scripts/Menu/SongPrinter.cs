@@ -8,23 +8,33 @@ using UnityEngine.UI;
 public class SongPrinter : MonoBehaviour 
 {
     public static SongPrinter instance;
+    public enum Sauce { nou, osu, resources};
+
     [System.Serializable]
     public class MenuSong
     {
-        public bool isFromAsset = false;
+        public Sauce sauce = Sauce.nou;
         public string path = "";//DIR PATH
-        public MenuSong(string Path)
+        public MenuSong(string Path, Sauce Source)
         {
             path = Path;
+            sauce = Source;
         }
     }
+
     [Header("Example songs")]
-    [Tooltip("path=在Resources/Songs的曲名")]
+    [Tooltip("path=在Resources/Songs的曲名, 這裡的sauce必為resources(要不要調隨便)")]
     public List<MenuSong> exampleSongs;
 
     [Header("Objects")]
-    [SerializeField] GameObject buttU, buttD, shouldPlaceIn;
     public List<GameObject> buttList;
+    [SerializeField] GameObject buttU, buttD, shouldPlaceIn;
+    public Button printNouButt, printOsuButt, printResButt;
+    public Image printNouImg, printOsuImg, printResImg;//由此判斷
+
+    readonly float initPos = 258.4f;//歌butt x init pos
+    readonly float[] initPosY = { -110.7f, -196.7f };////歌butt y init pos
+
 
     void Awake()
     {
@@ -37,18 +47,20 @@ public class SongPrinter : MonoBehaviour
 #if UNITY_STANDALONE || UNITY_EDITOR
         if (!Directory.Exists(Application.persistentDataPath + "\\Songs\\"))
             Directory.CreateDirectory(Application.persistentDataPath + "\\Songs\\");
-
+        
+        //nou! folder
         foreach (var item in Directory.GetDirectories(Application.persistentDataPath + "\\Songs\\"))
         {
             Debug.Log("從nou存檔獲取曲包 路徑: "+item);
-            songList.Add( new MenuSong(item) );
+            songList.Add( new MenuSong(item, Sauce.nou) );
         }
 
+        //osu! folder (user pre-defined)
         if(Directory.Exists(Userpref.data.customOsuPath))
             foreach (var item in Directory.GetDirectories(Userpref.data.customOsuPath))
             {
                 Debug.Log("從osu獲取曲包 路徑: "+item);
-                songList.Add(new MenuSong(item) );
+                songList.Add(new MenuSong(item, Sauce.osu) );
             }
         else
             Debug.Log("未找到osu資料夾");
@@ -56,12 +68,12 @@ public class SongPrinter : MonoBehaviour
         foreach(var item in exampleSongs)
         {
             Debug.Log("從Asset獲取曲包 相對路徑: Resources/Song/" + item.path);
-            item.isFromAsset = true;
+            item.sauce = Sauce.resources;
             songList.Add(item);
         }
         #endregion
 
-        int cPos = 0;//相對於第一個butt，位置差
+        #region Make Butt
         for(int i = 0; i < songList.Count; i++)
         {
             GameObject go;
@@ -71,17 +83,14 @@ public class SongPrinter : MonoBehaviour
                 go = Instantiate(buttD, buttD.transform.parent);
             
             go.name = "Button ("+i+")";
-            Vector3 p = go.GetComponent<RectTransform>().localPosition;
-            go.GetComponent<RectTransform>().localPosition = new Vector3(p.x+cPos, p.y, p.z);
-            cPos += 50;
-            Vector2 v = shouldPlaceIn.GetComponent<RectTransform>().offsetMax;
-            shouldPlaceIn.GetComponent<RectTransform>().offsetMax = new Vector2(300+cPos, v.y); //L padding
-            go.transform.SetParent(shouldPlaceIn.transform, true);
+            go.tag = songList[i].sauce.ToString();
             go.SetActive(true);
             buttList.Add(go);
-
+            ReArrangeButts();      
+            
+            //Load osu files
             List<OsuFile> o = new List<OsuFile>();
-            if (songList[i].isFromAsset)
+            if (songList[i].sauce == Sauce.resources)
             {
                 foreach (var f in Resources.LoadAll($"Songs/{songList[i].path}") )
                 {
@@ -116,7 +125,7 @@ public class SongPrinter : MonoBehaviour
 
             //Load BG
             Texture2D t2d = new Texture2D(1, 1);
-            if (songList[i].isFromAsset)
+            if (songList[i].sauce == Sauce.resources)
             {
                 string t2dpath = $"Songs/{songList[i].path}/{Path.GetFileNameWithoutExtension(o[0].BGfileName)}";
                 t2d = Resources.Load<Texture2D>(t2dpath);
@@ -148,7 +157,6 @@ public class SongPrinter : MonoBehaviour
                 }
             }
 #endif
-
             RawImage bg = go.transform.Find("Content/Gradient/SongBG").GetComponent<RawImage>();
             bg.texture = t2d;
             float bgXscale = t2d.width / t2d.height;
@@ -172,17 +180,95 @@ public class SongPrinter : MonoBehaviour
         } 
 
         buttU.SetActive(false);
-        buttD.SetActive(false);     
+        buttD.SetActive(false);
+        #endregion
     }
 
+    /// <summary>
+    /// 刷新歌單後列印
+    /// </summary>
     public void Reprint()
     {
         foreach(var go in buttList)
         {
-            Destroy(go);
+            if (go.tag != Sauce.resources.ToString())
+            {
+                Destroy(go.transform.Find("Content/Gradient/SongBG").GetComponent<RawImage>().texture);
+            }
+            Destroy(go);  
         }
         buttList.Clear();
         Awake();
+    }
+
+    /// <summary>
+    /// 不刷新歌單重印
+    /// </summary>
+    public void ReprintNoRefresh()
+    {
+        foreach(var go in buttList)
+        {
+            if (go.tag == Sauce.nou.ToString())
+            {
+                go.SetActive(printNouImg.enabled);
+            }
+            else if(go.tag == Sauce.osu.ToString())
+            {
+                go.SetActive(printOsuImg.enabled);
+            }
+            else if(go.tag == Sauce.resources.ToString())
+            {
+                go.SetActive(printResImg.enabled);
+            }
+        }
+    }
+
+    /// <summary>
+    ///  nou, osu, res
+    /// </summary>
+    /// <param name="toggleSauce"></param>
+    public void TogglePrint(string toggleSauce)
+    {
+        switch(toggleSauce)
+        {
+            case "nou":
+                printNouImg.enabled = !printNouImg.enabled;
+                break;
+            case "osu":
+                printOsuImg.enabled = !printOsuImg.enabled;
+                break;
+            case "res":
+                printResImg.enabled = !printResImg.enabled;
+                break;
+        }
+        ReprintNoRefresh();
+        ReArrangeButts();
+    }
+
+    /// <summary>
+    /// 重新排列歌曲按鈕位置
+    /// </summary>
+    void ReArrangeButts()
+    {
+        int cPos = 0;//相對於第一個butt，位置差
+        int songOrder = 0;
+        foreach (GameObject go in buttList)
+        {
+            go.transform.SetParent(shouldPlaceIn.transform, true);
+            Vector3 p = go.GetComponent<RectTransform>().localPosition;
+
+            
+            if (go.activeInHierarchy)
+            {
+                go.GetComponent<RectTransform>().localPosition = new Vector3(initPos + cPos, initPosY[songOrder % 2], p.z);
+                cPos += 50;
+                Vector2 v = shouldPlaceIn.GetComponent<RectTransform>().offsetMax;
+                shouldPlaceIn.GetComponent<RectTransform>().offsetMax = new Vector2(300 + cPos, v.y); //L padding
+                songOrder++;
+                
+            }
+        }
+        
     }
 
 }
