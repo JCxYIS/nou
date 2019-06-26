@@ -106,9 +106,12 @@ public class MenuHandler : MonoBehaviour
 
     public void ClearCache()
     {
-        foreach(string f in Directory.GetFiles(Application.persistentDataPath+"/.thumbnail") )
+        if(Directory.Exists(Application.persistentDataPath + "/.thumbnail"))
         {
-            File.Delete(f);
+            foreach (string f in Directory.GetFiles(Application.persistentDataPath + "/.thumbnail"))
+            {
+                File.Delete(f);
+            }
         }
         Caching.ClearCache();
         Debug.Log("Cleared cache");

@@ -54,7 +54,10 @@ public class Circle : MonoBehaviour
         StartCoroutine(Checker());
     }
 
-    //因為在spawn之前，它的位置是螢幕外
+    
+    /// <summary>
+    /// 因為在spawn之前，它的位置是螢幕外
+    /// </summary>
     public Vector3 MyPos()
     {
         return new Vector3(PosX, PosY, PosZ);

@@ -339,27 +339,27 @@ public class GameHandler : MonoBehaviour
 
             // Determine best Pos
             if(BestObjCount < CircleList.Count)
-            {
-                transform.position = Vector3.MoveTowards(
-                    transform.position, 
-                    CircleList[BestObjCount].GetComponent<Circle>().MyPos() + new Vector3(0,0,0.1f), 
-                    BestMoveSpeed * Time.deltaTime);
+            {               
+                    transform.position = Vector3.MoveTowards(
+                        transform.position, 
+                        CircleList[BestObjCount].GetComponent<Circle>().MyPos() + new Vector3(0,0,0.1f), 
+                        BestMoveSpeed * Time.deltaTime);         
             }
             else
             {
                 CursorTrail.SetActive(false);
             }
-            if (timer >= ApprRate + CircleList[BestObjCount].GetComponent<Circle>().PosA )
+            if (timer >= ApprRate + CircleList[BestObjCount].GetComponent<Circle>().PosA)
             { 
                 if(BestObjCount+1 < CircleList.Count)
                 {
                     Circle Obj1 = CircleList[BestObjCount].GetComponent<Circle>();
-                    Circle Obj2 = CircleList[BestObjCount+1].GetComponent<Circle>();
-                    transform.position = Obj1.transform.position;
-                    BestMoveSpeed = Vector3.Distance( Obj2.MyPos(), transform.position);
-                    BestMoveSpeed /= ( (float)(Obj2.PosA - Obj1.PosA) )/1000f;
-                    BestObjCount ++;
-                }
+                    Circle Obj2 = CircleList[BestObjCount+1].GetComponent<Circle>();                
+                    transform.position = Obj1.MyPos();
+                    BestMoveSpeed = Vector3.Distance( Obj2.MyPos(), transform.position); // distance
+                    BestMoveSpeed /= ( (float)(Obj2.PosA - Obj1.PosA) )/1000f; // time
+                    BestObjCount ++;                          
+               }
                 //Debug.Log("BestMoveSpeed="+BestMoveSpeed);
             }
 

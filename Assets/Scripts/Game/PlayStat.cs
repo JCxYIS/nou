@@ -78,7 +78,7 @@ public class PlayStat : MonoBehaviour
     }
 
     ///<summary>
-    ///  由 Circle 呼叫，增加分數
+    ///  由 Circle 呼叫，增加分數，pos用來製作label
     ///</summary>
     public void GotCircle(int rating, Vector3 pos)
     {
