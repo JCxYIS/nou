@@ -8,7 +8,7 @@
 > ps.我不玩osu!
 
 ## 預定改版內容
-- 從song切至dif時，dif button有動畫(如dif至conf時之轉場)
+- in game menu
 - 血量掉至0時，game over menu-
 - 盾條的實作(as fever bar)
 - 角色的實作
