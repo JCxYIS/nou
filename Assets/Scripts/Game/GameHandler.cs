@@ -292,27 +292,29 @@ public class GameHandler : MonoBehaviour
     {
         while (true)
         {
+            // Spawn object
             timer = (Music.time * 1000); // Convert timer
             if(ObjCount < CircleList.Count)
                 DelayPos = (CircleList[ObjCount].GetComponent<Circle>().PosA);
             else
-                DelayPos = int.MaxValue;//end, cannot spawn anymore!
+                DelayPos = int.MaxValue; //end, cannot spawn anymore!
 
-            // Spawn object
             if (timer >= DelayPos)
             {
                 CircleList[ObjCount].GetComponent<Circle>().Spawn();
                 ObjCount++;
             }
 
+            // Pre: AutoMove mod
             Vector3 mousePos = Input.mousePosition;
             if( playStat.HasMod(PlayStat.Mods.AutoMove) )
             {
                 mousePos = MainCamera.WorldToScreenPoint(transform.position);
             }
 
-            MainRay = MainCamera.ScreenPointToRay(mousePos);
+
             // Check if cursor is over object
+            MainRay = MainCamera.ScreenPointToRay(mousePos);
             if (Physics.Raycast(MainRay, out MainHit))
             {
                 if (MainHit.collider.gameObject.GetComponent<Circle>())
@@ -368,13 +370,16 @@ public class GameHandler : MonoBehaviour
             MousePosition = MainCamera.ScreenToWorldPoint(mousePos);
             CursorTrail.transform.position = new Vector3(MousePosition.x, MousePosition.y, -9);
 
-            //UI Display
+            // UI Display
             Combo.Set(playStat.combo);
             scoreText.Set((float)playStat.score);
             percentageText.text = string.Format("{0:F2} %", playStat.percentage);
             progressBar.value = BGM.time / BGM.clip.length;
             HPbar.Set(playStat.hp, playStat.usingChara.hp);
             SPbar.Set(playStat.sp, 36550666f);
+
+            // GamePlay Logic
+            isdead?
 
             yield return null;
         }
