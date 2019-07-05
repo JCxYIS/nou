@@ -10,14 +10,15 @@ public class PausePanel : MonoBehaviour
     /// </summary>
     [SerializeField] Button resumeButt;
     [SerializeField] Text resumeCountDown;
-    [SerializeField] Animator anim;
+    Animator anim;
 
     float resumeCd;
 
     // Use this for initialization
     void Start()
     {
-
+        anim = GetComponent<Animator>();
+        gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -39,13 +40,14 @@ public class PausePanel : MonoBehaviour
 
     public void OnResumeButtPressed()
     {
-        anim.Play("RESUME");
+        Debug.Log("Resume.");
+        anim.Play("UNSHOW");
         resumeCd = 3;
         StartCoroutine(DoResume());
     }
     public void OnRetryButtPressed()
     {
-
+        Debug.Log("Retry.");
     }
     public void OnQuitButtPressed()
     {
@@ -58,7 +60,10 @@ public class PausePanel : MonoBehaviour
         while(resumeCd > 0)
         {
             resumeCd -= Time.deltaTime;
-            resumeCountDown.text = resumeCd.ToString();
+            if(resumeCd > 0)
+                resumeCountDown.text = resumeCd.ToString("0.00");
+            else
+                resumeCountDown.text = "<color=red>START!</color>";
             yield return 0;
         }
         GameHandler.instance.Music.pitch = 1;
