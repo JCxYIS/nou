@@ -8,7 +8,7 @@
 > ps.我不玩osu!
 
 ## 預定改版內容
-- in game menu
+- in game menu (已寫script，待添加)
 - 血量掉至0時，game over menu-
 - 盾條的實作(as fever bar)
 - 角色的實作

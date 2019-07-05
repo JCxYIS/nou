@@ -25,6 +25,7 @@ public class GameHandler : MonoBehaviour
     [SerializeField] GameObject autoMoveCursor;
     [SerializeField] HealthBar SPbar;
     [SerializeField] HealthBar HPbar;
+    [SerializeField] PausePanel pausePanel;
 
     #if UNITY_EDITOR
     [Header("In Editor Test")]
@@ -36,6 +37,7 @@ public class GameHandler : MonoBehaviour
     [Header("In Game")]
     public AudioClip MainMusic; // Music file, attach from editor
     public AudioClip HitSound; // Hit sound
+    public bool isPaused = true;
     public double timer = 0; // Main song timer
     public int ApprRate = 600; // NOTE產生於 (ms) 秒前
     private int DelayPos = 0; // Delay song position
@@ -55,7 +57,7 @@ public class GameHandler : MonoBehaviour
 
     // Audio stuff
     private AudioSource Sounds;//attach to self
-    private AudioSource Music;//attach to "Music Source"
+    public AudioSource Music;//attach to "Music Source"
     public static AudioSource pSounds;
     public static AudioClip pHitSound;
 
@@ -146,7 +148,7 @@ public class GameHandler : MonoBehaviour
     {
         if(Input.GetKeyUp(KeyCode.Escape))
         {
-            SceneManager.LoadSceneAsync("Score");
+            pausePanel.ShowPanel(false);
         }
         try
         {
@@ -285,7 +287,18 @@ public class GameHandler : MonoBehaviour
         Application.targetFrameRate = -1; // Unlimited Frame Rate
         Music.volume = Userpref.data.volumeBgm;
         Music.Play();
+        isPaused = false;
         StartCoroutine(UpdateRoutine()); // Using coroutine instead of Update()
+    }
+
+    private IEnumerator DeadCoroutine()
+    {
+        while (Music.pitch > 0)
+        {
+            Music.pitch -= Time.deltaTime * 1.2f;
+            yield return 0;
+        }
+        pausePanel.ShowPanel(true);
     }
 
     private IEnumerator UpdateRoutine()
@@ -379,7 +392,12 @@ public class GameHandler : MonoBehaviour
             SPbar.Set(playStat.sp, 36550666f);
 
             // GamePlay Logic
-            isdead?
+            if(playStat.hp <= 0 && !isPaused) // is dead 
+            {
+                Debug.Log("現在開始死亡動畫");
+                StartCoroutine( DeadCoroutine() );
+                isPaused = true;
+            }
 
             yield return null;
         }
