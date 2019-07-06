@@ -9,13 +9,13 @@
 
 ## 預定改版內容
 - in game menu retry
-- hp overflow
-- 盾條的實作(as fever bar)
+- 盾條的實作(fever)
 - 角色的實作
 
 ## 改版訊息
-### V.3.0 (developing)
+### V.3.0
 - 製作了遊戲中選單，按下Esc可以叫出！
+- 會顯示實力成績了！(滿分為1000000，分數會受mod影響)
 - 建議游標位置顯示更清晰
 - 修正了Auto Move游標位置有時會飄移的問題
 

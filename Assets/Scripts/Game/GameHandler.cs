@@ -415,7 +415,7 @@ public class GameHandler : MonoBehaviour
             percentageText.text = string.Format("{0:F2} %", playStat.percentage);
             progressBar.value = BGM.time / BGM.clip.length;
             HPbar.Set(playStat.hp, playStat.usingChara.hp);
-            SPbar.Set(playStat.sp, 36550666f);
+            SPbar.Set(playStat.sp, 100f);
 
             // GamePlay Logic
             if(playStat.hp <= 0 && !pausePanel.isPaused) // is dead 

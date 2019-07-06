@@ -69,7 +69,19 @@ public class PlayStat : MonoBehaviour
         if(maxCombo < combo)
             maxCombo = combo;
         
-        trueScore = CalcTrueScore(score, mods);
+        trueScore = CalcTrueScore(unscaledScore, mods);
+
+        if (hp > usingChara.hp)
+        {
+            float ovf = hp - usingChara.hp;
+            hp = usingChara.hp;
+            sp += ovf;
+        }
+        if(sp > 100)
+        {
+            sp = 100;
+            //Debug.Log("SP => 100");
+        }
     }
     
     public void Init(List<GameObject> CircleList)
@@ -152,7 +164,7 @@ public class PlayStat : MonoBehaviour
     /// </summary>
     void Heal(float regMulti)
     {
-        hp += usingChara.heal / 100f * (1f + combo * 0.005f);
+        hp += usingChara.heal / 100f * (1f + combo * 0.005f);            
     }
     void Hurt(float dmgMulti)
     {

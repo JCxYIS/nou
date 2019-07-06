@@ -9,6 +9,7 @@ public class ScoreManager : MonoBehaviour
     public Number Score, Percent;
     public Number[] NoteStat;//gay,ok,bed,succ,MaxCB
     public Number TrueScore;
+    public Number Revive;
     PlayStat ps = null;
 
     // Start is called before the first frame update
@@ -33,7 +34,9 @@ public class ScoreManager : MonoBehaviour
         Percent.Set(ps.percentage ); 
         for(int i = 0; i <= 3; i++)  
             NoteStat[i].Set(ps.noteResult[i]);
-        NoteStat[4].Set(ps.maxCombo); 
+        NoteStat[4].Set(ps.maxCombo);
+        Revive.Set(ps.reviveCount);
+        TrueScore.Set((float)ps.trueScore);
         //MaxCombo.text = string.Format("{0:F0}", ps.score);
     }
     
