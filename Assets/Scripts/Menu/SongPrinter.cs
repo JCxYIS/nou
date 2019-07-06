@@ -146,7 +146,7 @@ public class SongPrinter : MonoBehaviour
                     }
                     else
                         t2d = MenuHandler.LoadPic(o[0].dirPath + "/" + o[0].BGfileName);
-                    TextureScale.Bilinear(t2d, (int)(((float)t2d.width / (float)t2d.height) * 100), 100);
+                    TextureScale.Bilinear(t2d, (int)(((float)t2d.width / (float)t2d.height) * 256), 256);
                     byte[] bytes = t2d.EncodeToPNG();
                     File.WriteAllBytes(thumbnailPath, bytes);
                     Debug.Log("Finished Making Thumbnail! Path= <color=yellow>" + thumbnailPath + "</color>");
