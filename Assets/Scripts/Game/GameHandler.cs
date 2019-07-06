@@ -37,7 +37,7 @@ public class GameHandler : MonoBehaviour
     [Header("In Game")]
     public AudioClip MainMusic; // Music file, attach from editor
     public AudioClip HitSound; // Hit sound
-    public bool isPaused = true;
+    //public bool isPaused = true; //已移至PausePanel
     public double timer = 0; // Main song timer
     public int ApprRate = 600; // NOTE產生於 (ms) 秒前
     private int DelayPos = 0; // Delay song position
@@ -64,7 +64,6 @@ public class GameHandler : MonoBehaviour
     // Other stuff
     private Camera MainCamera;
     private GameObject CursorTrail;
-    private Vector3 MousePosition;
     private Ray MainRay;
     private RaycastHit MainHit;
     private Text comboText;
@@ -146,14 +145,25 @@ public class GameHandler : MonoBehaviour
     }
     void Update()
     {
+        // key binding
         if(Input.GetKeyUp(KeyCode.Escape))
         {
             pausePanel.ShowPanel(false);
         }
+        if(Input.GetKeyDown(KeyCode.Space) && !pausePanel.isPaused && playStat.hp > 0)
+        {
+            Music.pitch = 8.763f;
+        }
+        if(Input.GetKeyUp(KeyCode.Space) && !pausePanel.isPaused && playStat.hp > 0)
+        {
+            Music.pitch = 1;
+        }
+
+
         try
         {
             DiscordHandler.instance.SetPresence(
-            playStat.playing.Title + " - " + playStat.playing.Artist + "(" + playStat.playing.Creator+"'s "+playStat.playing.Version+")", 
+            playStat.playing.ToString(), 
             string.Format("{0:F0} ({1:F2}%) | {2:N0}x", playStat.score, playStat.percentage , playStat.combo) );
         }
         catch
@@ -169,8 +179,17 @@ public class GameHandler : MonoBehaviour
         {
             SceneManager.LoadSceneAsync("Score");
         }
+
+        // Cursor trail movement
+        Vector3 mousePos = Input.mousePosition;
+        if (playStat.HasMod(PlayStat.Mods.AutoMove))
+            mousePos = MainCamera.WorldToScreenPoint(transform.position);
+        Vector3 MousePosition = MainCamera.ScreenToWorldPoint(mousePos);
+        CursorTrail.transform.position = new Vector3(MousePosition.x, MousePosition.y, -9);
     }
     #endregion
+
+    #region FUNCTIONS
 
     /// <summary>
     ///讀取map
@@ -209,9 +228,9 @@ public class GameHandler : MonoBehaviour
         }
 
         // Sort objects on load
-        int ForeOrder = TotalLines + 2; // Sort foreground layer
-        int BackOrder = TotalLines + 1; // Sort background layer
-        int ApproachOrder = TotalLines; // Sort approach circles layer
+        int ForeOrder = 102; // Sort foreground layer
+        int BackOrder = 101; // Sort background layer
+        int ApproachOrder = 100; // Sort approach circles layer
 
         // Some crazy Z axis modifications for sorting
         string TotalLinesStr = "0.";
@@ -287,9 +306,12 @@ public class GameHandler : MonoBehaviour
         Application.targetFrameRate = -1; // Unlimited Frame Rate
         Music.volume = Userpref.data.volumeBgm;
         Music.Play();
-        isPaused = false;
         StartCoroutine(UpdateRoutine()); // Using coroutine instead of Update()
     }
+
+    #endregion
+
+    #region COROUTINES
 
     private IEnumerator DeadCoroutine()
     {
@@ -305,6 +327,14 @@ public class GameHandler : MonoBehaviour
     {
         while (true)
         {
+            // Pause: Don't do update coroutine
+            if(pausePanel.isPaused)
+            {
+                //Debug.Log($"[{Time.time}] - IS PAUSED");
+                yield return 0;
+                continue;
+            }
+
             // Spawn object
             timer = (Music.time * 1000); // Convert timer
             if(ObjCount < CircleList.Count)
@@ -379,10 +409,6 @@ public class GameHandler : MonoBehaviour
             }
 
 
-            // Cursor trail movement
-            MousePosition = MainCamera.ScreenToWorldPoint(mousePos);
-            CursorTrail.transform.position = new Vector3(MousePosition.x, MousePosition.y, -9);
-
             // UI Display
             Combo.Set(playStat.combo);
             scoreText.Set((float)playStat.score);
@@ -392,15 +418,15 @@ public class GameHandler : MonoBehaviour
             SPbar.Set(playStat.sp, 36550666f);
 
             // GamePlay Logic
-            if(playStat.hp <= 0 && !isPaused) // is dead 
+            if(playStat.hp <= 0 && !pausePanel.isPaused) // is dead 
             {
                 Debug.Log("現在開始死亡動畫");
                 StartCoroutine( DeadCoroutine() );
-                isPaused = true;
             }
 
-            yield return null;
+            yield return 1;
         }
     }
+    #endregion
 
 }

@@ -9,10 +9,14 @@ public class PausePanel : MonoBehaviour
     /// 在game over面板會被替換成"REVIVE"
     /// </summary>
     [SerializeField] Button resumeButt;
+    [SerializeField] Text resumeButtTab;
     [SerializeField] Text resumeCountDown;
+    [SerializeField] Text titleTab, songInfoTab;
     Animator anim;
 
     float resumeCd;
+    bool isDeadPanel;
+    public bool isPaused { get { return gameObject.activeInHierarchy; } }
 
     // Use this for initialization
     void Start()
@@ -35,12 +39,36 @@ public class PausePanel : MonoBehaviour
     {
         GameHandler.instance.Music.pitch = 0;
         gameObject.SetActive(true);
+        isDeadPanel = isDead;
+
+        if(isDead)
+        {
+            titleTab.text = "<color=red><b>YOU'VE ALREADY DEAD</b></color>";
+            resumeButtTab.text = $"REVIVE\n<color=green>已復活\u00a0{PlayStat.instance.reviveCount}\u00a0次</color>";
+        }
+        else
+        {
+
+        }
+        songInfoTab.text = PlayStat.instance.playing.ToString("ta") + "\n(" + PlayStat.instance.playing.ToString("cv") +")";
+
         anim.Play("SHOW");
     }
 
     public void OnResumeButtPressed()
     {
-        Debug.Log("Resume.");
+        
+        if(isDeadPanel)
+        {
+            PlayStat.instance.hp = PlayStat.instance.usingChara.hp / 2f;
+            PlayStat.instance.reviveCount++;
+            Debug.Log($"Revive | ReviveCount={PlayStat.instance.reviveCount}");
+        }
+        else
+        {
+            Debug.Log("Resume.");
+        }
+
         anim.Play("UNSHOW");
         resumeCd = 3;
         StartCoroutine(DoResume());
@@ -63,7 +91,7 @@ public class PausePanel : MonoBehaviour
             if(resumeCd > 0)
                 resumeCountDown.text = resumeCd.ToString("0.00");
             else
-                resumeCountDown.text = "<color=red>START!</color>";
+                resumeCountDown.text = "<color=cyan>START!</color>";
             yield return 0;
         }
         GameHandler.instance.Music.pitch = 1;

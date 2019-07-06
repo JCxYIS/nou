@@ -6,6 +6,7 @@ public class PlayStat : MonoBehaviour
     static public PlayStat instance;
 
     public OsuFile playing = null; // playing 
+
     static public string[] ModString = {"Groove Coaster", "Auto Click"}; 
 
     ///<summary>
@@ -52,6 +53,7 @@ public class PlayStat : MonoBehaviour
     public CharaManager.Chara usingChara;
     public float hp;
     public float sp;
+    public int reviveCount = 0;
 
     private void Start() 
     {

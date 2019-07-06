@@ -130,7 +130,7 @@ public class Circle : MonoBehaviour
         }
     }
 
-    // Main Update
+    // Main Update, 負責transform操作
     private void Update ()
     {
         // Approach Circle modifier
@@ -143,7 +143,6 @@ public class Circle : MonoBehaviour
             Fore.color = MainColor1;
             Back.color = MainColor2;
             Appr.color = MainColor;
-
         }
         // If circle wasn't clicked
         else if (!GotIt)
@@ -170,6 +169,7 @@ public class Circle : MonoBehaviour
                 }
             }
         }
+
         // If circle was clicked
         if (GotIt)
         {

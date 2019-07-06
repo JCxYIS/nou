@@ -8,13 +8,14 @@
 > ps.我不玩osu!
 
 ## 預定改版內容
-- in game menu (已寫script，待添加)
-- 血量掉至0時，game over menu-
+- in game menu retry
+- hp overflow
 - 盾條的實作(as fever bar)
 - 角色的實作
 
 ## 改版訊息
-### V.2.2 (developing)
+### V.3.0 (developing)
+- 製作了遊戲中選單，按下Esc可以叫出！
 - 建議游標位置顯示更清晰
 - 修正了Auto Move游標位置有時會飄移的問題
 

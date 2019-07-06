@@ -80,6 +80,33 @@ public class OsuFile
     public string BGmovieFileName;
 
 
+    /// <summary>
+    /// 歌曲 - 作曲者 (製圖者's 難度)
+    /// </summary>
+    /// <returns></returns>
+    public override string ToString()
+    {
+        return ToString("all");
+    }
+    /// <summary>
+    /// ta: 歌曲 - 作曲者; cv: 製圖者's 難度(沒括號)
+    /// </summary>
+    public string ToString(string format)
+    {
+        string ta = Title + " - " + Artist;
+        string cv = Creator + "'s " + Version;
+        switch(format)
+        {
+            case "all":
+                return $"{ta} ({cv})";
+            case "ta":
+                return ta;
+            case "cv":
+                return cv;
+            default:
+                return "[ToStringError]"; 
+        }
+    }
 
 
     /// <summary>
@@ -100,7 +127,7 @@ public class OsuFile
         {
             string str = dataLines[l];
 
-#region METADATA
+            #region METADATA
             string[] s = str.Split(':');
             //Debug.Log(s[0]);
             string content = "";
@@ -135,7 +162,7 @@ public class OsuFile
                     OverallDifficulty = float.Parse(content);
                 break;
             }
-#endregion
+                #endregion
 
 #region BG
             if(str == "//Background and Video events")
