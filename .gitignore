@@ -39,9 +39,10 @@ sysinfo.txt
 
 # 自己UAS去載package吧
 /Assets/Lomenu UI
-/Assets/PostProcessing
+/Assets/StandaloneFileBrowser
 /Assets/Modern UI Pack
+/Assets/PostProcessing
 
+# 出處待補
 /Assets/Discord
 /Assets/Plugins
-
