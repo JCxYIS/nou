@@ -121,16 +121,25 @@ public class MenuHandler : MonoBehaviour
 
     public static Texture2D LoadPic(string picpath)
     {
-        Texture2D t2d = new Texture2D(1,1);
-        FileStream fileStream = new FileStream(picpath, FileMode.Open, FileAccess.Read);
-        fileStream.Seek(0, SeekOrigin.Begin);
-        byte[] bytes = new byte[fileStream.Length];
-        fileStream.Read(bytes, 0, (int)fileStream.Length);
-        fileStream.Close();
-        fileStream.Dispose();
-        if( !t2d.LoadImage(bytes) )
-            Debug.LogError("Load Pic Error!");
-        return t2d;
+        try
+        {
+
+            Texture2D t2d = new Texture2D(1, 1);
+            FileStream fileStream = new FileStream(picpath, FileMode.Open, FileAccess.Read);
+            fileStream.Seek(0, SeekOrigin.Begin);
+            byte[] bytes = new byte[fileStream.Length];
+            fileStream.Read(bytes, 0, (int)fileStream.Length);
+            fileStream.Close();
+            fileStream.Dispose();
+            if (!t2d.LoadImage(bytes))
+                Debug.LogError("Load Pic Error!");
+            return t2d;
+        }
+        catch(System.Exception e)
+        {
+            Debug.LogError($"Failed to load an image! \n{e}");
+            return Resources.Load<Texture2D>("NoPic");
+        }
     }
 
 }

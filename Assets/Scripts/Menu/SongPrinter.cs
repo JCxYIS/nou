@@ -119,6 +119,8 @@ public class SongPrinter : MonoBehaviour
             if (o.Count == 0)
             {
                 Debug.LogError("沒有找到.osu, path:" + songList[i].path);
+                go.SetActive(false);
+                ReArrangeButts();
                 continue;
             }
 
