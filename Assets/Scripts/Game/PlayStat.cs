@@ -24,7 +24,7 @@ public class PlayStat : MonoBehaviour
     static public string[] noteRatings = {"GAY!", "OK", "Bed.", "SUCC"}; // name
     static public float[] noteScore = {1f, 0.7f, 0.3f, 0f}; // full==1
     static public float[] noteScoreOsu = { 1f, 0.3333333333f, 0.1666666666f, 0f }; // full==1
-    static public int[] noteOffset = {68, 177, 274}; // ms
+    static public int[] noteOffset = { 111, 222, 333 }; //{68, 177, 274}; // ms
 
     
     [Header("Game Play")]

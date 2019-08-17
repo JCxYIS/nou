@@ -88,16 +88,21 @@ public class GameHandler : MonoBehaviour
 
         switch(Userpref.data.skinType)
         {
+            default:
+            case 0:
+                Debug.Log("USING SKIN" + Userpref.data.skinType);
+                Circle = Resources.Load<GameObject>("Skin0/Circle");
+                HitSound = Resources.Load<AudioClip>("Skin0/player_knocked");
+                break;
             case 1:
                 Circle = Resources.Load<GameObject>("Skin1/CircleBhe");
                 HitSound = Resources.Load<AudioClip>("Skin1/ㄅtrim");
                 break;
-            default:
-            case 0:
-            Debug.Log("USING SKIN"+Userpref.data.skinType);
-                Circle = Resources.Load<GameObject>("Skin0/Circle");
-                HitSound = Resources.Load<AudioClip>("Skin0/player_knocked");
+            case 2:
+                Circle = Resources.Load<GameObject>("Skin2/Circle");
+                HitSound = Resources.Load<AudioClip>("Skin2/jc_hentai!");
                 break;
+
         }
         
         if(GameObject.Find("GameValue"))
